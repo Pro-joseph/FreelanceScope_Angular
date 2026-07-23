@@ -1,0 +1,55 @@
+<div class="max-w-3xl mx-auto">
+  <div class="flex items-center gap-4 mb-6">
+    <a [routerLink]="['/projects', route.snapshot.params['id']]" class="text-gray-500 hover:text-gray-700">&larr; Retour</a>
+    <h1 class="text-2xl font-bold text-gray-900">Estimation IA</h1>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+    @if (error) {
+      <div class="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">{{ error }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Décrivez le besoin *</label>
+        <textarea formControlName="prompt" rows="6" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Décrivez en détail les fonctionnalités souhaitées pour ce projet... (min. 20 caractères)"></textarea>
+        @if (form.controls.prompt.touched && form.controls.prompt.invalid) {
+          <p class="text-red-500 text-xs mt-1">Minimum 20 caractères requis</p>
+        }
+      </div>
+      <button type="submit" [disabled]="form.invalid || loading" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 transition-colors">
+        @if (loading) {
+          Analyse en cours...
+        } @else {
+          Lancer l'estimation IA
+        }
+      </button>
+    </form>
+  </div>
+
+  <div class="space-y-4">
+    @for (analysis of analyses; track analysis.id) {
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-2">
+          <p class="text-sm text-gray-500">Analyse #{{ analysis.id }}</p>
+          <p class="text-xs text-gray-400">{{ analysis.created_at }}</p>
+        </div>
+        <div class="mb-3">
+          <p class="text-sm font-medium text-gray-700">Prompt :</p>
+          <p class="text-gray-600 text-sm">{{ analysis.prompt }}</p>
+        </div>
+        @if (analysis.response) {
+          <div>
+            <p class="text-sm font-medium text-gray-700">Réponse :</p>
+            <p class="text-gray-600 text-sm whitespace-pre-wrap">{{ analysis.response }}</p>
+          </div>
+        }
+        @if (analysis.model) {
+          <p class="text-xs text-gray-400 mt-2">Modèle : {{ analysis.model }}</p>
+        }
+      </div>
+    } @empty {
+      <p class="text-gray-500 text-center py-8">Aucune analyse pour le moment</p>
+    }
+  </div>
+</div>

@@ -1,0 +1,78 @@
+<div class="max-w-4xl mx-auto">
+  <div class="flex items-center gap-4 mb-6">
+    <a [routerLink]="['/projects', projectId]" class="text-gray-500 hover:text-gray-700">&larr; Retour</a>
+    <h1 class="text-2xl font-bold text-gray-900">Devis #{{ devisId }}</h1>
+    <div class="ml-auto flex gap-2">
+      <a [routerLink]="['/projects', projectId, 'devis', devisId, 'edit']" class="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+        Personnaliser
+      </a>
+      <button (click)="downloadPdf()" class="px-3 py-1.5 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+        Télécharger PDF
+      </button>
+    </div>
+  </div>
+
+  @if (devis) {
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+      <div class="border-b border-gray-200 pb-6 mb-6">
+        <h2 class="text-xl font-bold text-gray-900">{{ devis.project.name }}</h2>
+        <p class="text-gray-500 mt-1">{{ devis.project.description }}</p>
+      </div>
+
+      <div class="mb-6">
+        <h3 class="text-sm font-medium text-gray-500 mb-2">Client</h3>
+        <p class="text-gray-900">{{ devis.client.company_name }}</p>
+        <p class="text-sm text-gray-500">{{ devis.client.email }} • {{ devis.client.phone }}</p>
+      </div>
+
+      @if (devis.features && devis.features.length > 0) {
+        <div class="mb-6">
+          <h3 class="text-sm font-medium text-gray-500 mb-2">Fonctionnalités</h3>
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-gray-200 text-left text-sm text-gray-500">
+                <th class="pb-2">Nom</th>
+                <th class="pb-2">Complexité</th>
+                <th class="pb-2 text-right">Taux horaire</th>
+                <th class="pb-2 text-right">Heures</th>
+                <th class="pb-2 text-right">Montant</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (feat of devis.features; track $index) {
+                <tr class="border-b border-gray-100 text-sm">
+                  <td class="py-2 text-gray-900">{{ feat.name }}</td>
+                  <td class="py-2 text-gray-500">{{ feat.complexity }}</td>
+                  <td class="py-2 text-right">{{ feat.hourly_rate ? feat.hourly_rate + '€' : '—' }}</td>
+                  <td class="py-2 text-right">{{ feat.total_hours ? feat.total_hours + 'h' : '—' }}</td>
+                  <td class="py-2 text-right font-medium">{{ feat.total_amount ? feat.total_amount + '€' : '—' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+      <div class="border-t border-gray-200 pt-4">
+        <div class="flex justify-between text-lg font-bold text-gray-900">
+          <span>Total</span>
+          <span>{{ devis.total_amount }}€</span>
+        </div>
+      </div>
+
+      @if (devis.conditions) {
+        <div class="mt-6 pt-6 border-t border-gray-200">
+          <h3 class="text-sm font-medium text-gray-500 mb-2">Conditions</h3>
+          <p class="text-gray-700 text-sm whitespace-pre-wrap">{{ devis.conditions }}</p>
+        </div>
+      }
+
+      <div class="mt-6 pt-6 border-t border-gray-200 flex items-center justify-between text-sm text-gray-500">
+        <span>Statut : {{ devis.status }}</span>
+        <span>Créé le : {{ devis.created_at }}</span>
+      </div>
+    </div>
+  } @else {
+    <p class="text-gray-500 text-center py-12">Chargement...</p>
+  }
+</div>

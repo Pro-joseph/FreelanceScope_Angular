@@ -1,0 +1,41 @@
+<div>
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Clients</h1>
+    <a routerLink="/clients/new" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+      + Nouveau client
+    </a>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    @if (clients.length === 0) {
+      <p class="text-gray-500 text-center py-12">Aucun client pour le moment</p>
+    } @else {
+      <table class="w-full">
+        <thead>
+          <tr class="border-b border-gray-200 bg-gray-50">
+            <th class="text-left px-4 py-3 text-sm font-medium text-gray-500">Société</th>
+            <th class="text-left px-4 py-3 text-sm font-medium text-gray-500">Email</th>
+            <th class="text-left px-4 py-3 text-sm font-medium text-gray-500">Projets</th>
+            <th class="text-right px-4 py-3 text-sm font-medium text-gray-500">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (client of clients; track client.id) {
+            <tr class="border-b border-gray-100 hover:bg-gray-50">
+              <td class="px-4 py-3">
+                <a [routerLink]="['/clients', client.id]" class="text-indigo-600 hover:text-indigo-800 font-medium">
+                  {{ client.company_name }}
+                </a>
+              </td>
+              <td class="px-4 py-3 text-gray-600">{{ client.email || '—' }}</td>
+              <td class="px-4 py-3 text-gray-600">{{ client.projects_count ?? '—' }}</td>
+              <td class="px-4 py-3 text-right">
+                <a [routerLink]="['/clients', client.id, 'edit']" class="text-sm text-indigo-600 hover:text-indigo-800">Modifier</a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>

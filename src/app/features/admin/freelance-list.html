@@ -1,0 +1,42 @@
+<div>
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Gestion des freelances</h1>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    @if (freelances.length === 0) {
+      <p class="text-gray-500 text-center py-12">Aucun freelance</p>
+    } @else {
+      <table class="w-full">
+        <thead>
+          <tr class="border-b border-gray-200 bg-gray-50">
+            <th class="text-left px-4 py-3 text-sm font-medium text-gray-500">Nom</th>
+            <th class="text-left px-4 py-3 text-sm font-medium text-gray-500">Email</th>
+            <th class="text-left px-4 py-3 text-sm font-medium text-gray-500">Taux horaire</th>
+            <th class="text-left px-4 py-3 text-sm font-medium text-gray-500">Statut</th>
+            <th class="text-right px-4 py-3 text-sm font-medium text-gray-500">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (freelance of freelances; track freelance.id) {
+            <tr class="border-b border-gray-100 hover:bg-gray-50">
+              <td class="px-4 py-3">{{ freelance.prenom }} {{ freelance.nom }}</td>
+              <td class="px-4 py-3 text-gray-600">{{ freelance.email }}</td>
+              <td class="px-4 py-3">{{ freelance.taux_horaire ? freelance.taux_horaire + '€/h' : '—' }}</td>
+              <td class="px-4 py-3">
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium"
+                  [class.bg-green-100]="freelance.statut === 'actif'"
+                  [class.text-green-700]="freelance.statut === 'actif'"
+                  [class.bg-red-100]="freelance.statut === 'inactif'"
+                  [class.text-red-700]="freelance.statut === 'inactif'">
+                  {{ freelance.statut }}
+                </span>
+              </td>
+              <td class="px-4 py-3 text-right">
+                <a [routerLink]="['/admin/freelances', freelance.id, 'edit']" class="text-sm text-indigo-600 hover:text-indigo-800">Modifier</a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>

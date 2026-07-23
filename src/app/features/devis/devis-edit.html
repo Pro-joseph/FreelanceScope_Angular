@@ -1,0 +1,38 @@
+<div class="max-w-2xl mx-auto">
+  <div class="flex items-center gap-4 mb-6">
+    <a [routerLink]="['/projects', projectId, 'devis', devisId]" class="text-gray-500 hover:text-gray-700">&larr; Retour</a>
+    <h1 class="text-2xl font-bold text-gray-900">Personnaliser le devis</h1>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    @if (error) {
+      <div class="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">{{ error }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Montant total (€)</label>
+        <input type="number" formControlName="total_amount" min="0" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" />
+        @if (form.controls.total_amount.touched && form.controls.total_amount.invalid) {
+          <p class="text-red-500 text-xs mt-1">Montant invalide</p>
+        }
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Conditions</label>
+        <textarea formControlName="conditions" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Statut</label>
+        <select formControlName="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+          <option value="draft">Brouillon</option>
+          <option value="sent">Envoyé</option>
+          <option value="accepted">Accepté</option>
+          <option value="refused">Refusé</option>
+        </select>
+      </div>
+      <button type="submit" [disabled]="form.invalid" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition-colors">
+        Enregistrer
+      </button>
+    </form>
+  </div>
+</div>
