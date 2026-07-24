@@ -1,5 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
@@ -10,6 +12,7 @@ import { AuthService } from '../../core/services/auth.service';
 export class Profile implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
+  private readonly http = inject(HttpClient);
 
   readonly user = this.authService.user;
 
@@ -20,6 +23,8 @@ export class Profile implements OnInit {
     telephone: [''],
     taux_horaire: [0],
   });
+
+  error = '';
 
   ngOnInit() {
     const u = this.user();
@@ -32,5 +37,22 @@ export class Profile implements OnInit {
         taux_horaire: u.taux_horaire || 0,
       });
     }
+  }
+
+  submit() {
+    this.error = '';
+    this.http
+      .put(`${environment.apiUrl}/freelance/profile`, this.form.getRawValue())
+      .subscribe({
+        next: (res: any) => {
+          if (res) {
+            localStorage.setItem('user', JSON.stringify(res));
+            this.authService.user.set(res);
+          }
+        },
+        error: (err) => {
+          this.error = err.error?.message || "Erreur lors de la sauvegarde";
+        },
+      });
   }
 }

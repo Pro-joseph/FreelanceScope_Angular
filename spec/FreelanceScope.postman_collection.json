@@ -1,0 +1,814 @@
+{
+  "info": {
+    "name": "FreelanceScope API",
+    "description": "Collection Postman pour tester toutes les routes API et pages Angular SSR de FreelanceScope.\n\n## Configuration\n- `base_url` : http://localhost/api (variable de collection)\n- `angular_url` : http://localhost:4000 (variable de collection)\n- Le token Bearer est automatiquement sauvegardé après un login réussi\n- Les IDs sont à renseigner manuellement dans les variables de collection après création",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "angular_url",
+      "value": "http://localhost:4000"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "🔐 Auth (public)",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Dupont\",\n  \"prenom\": \"Jean\",\n  \"email\": \"jean@example.com\",\n  \"password\": \"password\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.token) {",
+                  "  pm.collectionVariables.set('token', json.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"jean@example.com\",\n  \"password\": \"password\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/auth/forgot-password",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "forgot-password"]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"jean@example.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/auth/reset-password",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "reset-password"]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"jean@example.com\",\n  \"token\": \"...\",\n  \"password\": \"new-password\",\n  \"password_confirmation\": \"new-password\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👤 Auth (authentifié)",
+      "item": [
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/auth/me",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/auth/logout",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "logout"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏢 Clients",
+      "item": [
+        {
+          "name": "List Clients",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/clients",
+              "host": ["{{base_url}}"],
+              "path": ["clients"]
+            }
+          }
+        },
+        {
+          "name": "Create Client",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/clients",
+              "host": ["{{base_url}}"],
+              "path": ["clients"]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_name\": \"Acme Corp\",\n  \"email\": \"contact@acme.com\",\n  \"phone\": \"+212600000000\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Show Client",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/clients/{{client_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["clients", "{{client_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Client",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{base_url}}/clients/{{client_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["clients", "{{client_id}}"]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_name\": \"Acme Corp Updated\",\n  \"email\": \"updated@acme.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Client",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/clients/{{client_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["clients", "{{client_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📁 Projets",
+      "item": [
+        {
+          "name": "List Projects",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/projects",
+              "host": ["{{base_url}}"],
+              "path": ["projects"]
+            }
+          }
+        },
+        {
+          "name": "Create Project",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/projects",
+              "host": ["{{base_url}}"],
+              "path": ["projects"]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"client_id\": \"{{client_id}}\",\n  \"name\": \"Site e-commerce\",\n  \"description\": \"Site de vente en ligne avec catalogue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Show Project",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/projects/{{project_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "{{project_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Project",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{base_url}}/projects/{{project_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "{{project_id}}"]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Projet mis à jour\",\n  \"status\": \"in_progress\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Project",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/projects/{{project_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "{{project_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "⚙️ Features",
+      "item": [
+        {
+          "name": "List Features",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/projects/{{project_id}}/features",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "{{project_id}}", "features"]
+            }
+          }
+        },
+        {
+          "name": "Create Feature",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/projects/{{project_id}}/features",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "{{project_id}}", "features"]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Page d'accueil\",\n  \"description\": \"Page d'accueil avec présentation du site\",\n  \"complexity\": \"moyen\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Show Feature",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/features/{{feature_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["features", "{{feature_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Feature",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{base_url}}/projects/{{project_id}}/features/{{feature_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "{{project_id}}", "features", "{{feature_id}}"]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Feature modifiée\",\n  \"complexity\": \"simple\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Feature",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/features/{{feature_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["features", "{{feature_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📄 Devis",
+      "item": [
+        {
+          "name": "List Devis",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/projects/{{project_id}}/devis",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "{{project_id}}", "devis"]
+            }
+          }
+        },
+        {
+          "name": "Generate Devis",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/projects/{{project_id}}/devis",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "{{project_id}}", "devis"]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conditions\": \"50% à la commande, 50% à la livraison\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Show Devis",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/projects/{{project_id}}/devis/{{devis_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "{{project_id}}", "devis", "{{devis_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Devis",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{base_url}}/projects/{{project_id}}/devis/{{devis_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "{{project_id}}", "devis", "{{devis_id}}"]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"sent\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Devis",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/projects/{{project_id}}/devis/{{devis_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "{{project_id}}", "devis", "{{devis_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Download Devis PDF",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/projects/{{project_id}}/devis/{{devis_id}}/pdf",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "{{project_id}}", "devis", "{{devis_id}}", "pdf"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "💰 Estimates",
+      "item": [
+        {
+          "name": "Show Estimate",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/features/{{feature_id}}/estimate",
+              "host": ["{{base_url}}"],
+              "path": ["features", "{{feature_id}}", "estimate"]
+            }
+          }
+        },
+        {
+          "name": "Update Estimate",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{base_url}}/estimates/{{estimate_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["estimates", "{{estimate_id}}"]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hourly_rate\": 65,\n  \"total_hours\": 20\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🤖 AI",
+      "item": [
+        {
+          "name": "Generate Estimate (AI)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/projects/{{project_id}}/ai-estimate",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "{{project_id}}", "ai-estimate"]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompt\": \"Je veux un site e-commerce avec catalogue produits, panier, paiement Stripe, et dashboard admin.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "List AI Analyses",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/projects/{{project_id}}/ai-analyses",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "{{project_id}}", "ai-analyses"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👨‍💻 Freelance",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/freelance/profile",
+              "host": ["{{base_url}}"],
+              "path": ["freelance", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{base_url}}/freelance/profile",
+              "host": ["{{base_url}}"],
+              "path": ["freelance", "profile"]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"taux_horaire\": 75,\n  \"telephone\": \"+212600000001\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Dashboard",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/freelance/dashboard",
+              "host": ["{{base_url}}"],
+              "path": ["freelance", "dashboard"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🛡️ Admin",
+      "item": [
+        {
+          "name": "Admin Dashboard",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/admin/dashboard",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "dashboard"]
+            }
+          }
+        },
+        {
+          "name": "List Freelances",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/admin/freelances",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "freelances"]
+            }
+          }
+        },
+        {
+          "name": "Create Freelance",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/admin/freelances",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "freelances"]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Jane\",\n  \"prenom\": \"Doe\",\n  \"email\": \"jane@example.com\",\n  \"password\": \"password123\",\n  \"telephone\": \"+212600000001\",\n  \"taux_horaire\": 75\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Freelance",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{base_url}}/admin/freelances/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "freelances", "{{user_id}}"]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"taux_horaire\": 80,\n  \"telephone\": \"+212600000002\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Toggle Freelance Status",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{base_url}}/admin/freelances/{{user_id}}/statut",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "freelances", "{{user_id}}", "statut"]
+            }
+          }
+        },
+        {
+          "name": "Delete Freelance",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/admin/freelances/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "freelances", "{{user_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🌐 Pages Angular SSR (http://localhost:4000)",
+      "item": [
+        {
+          "name": "Accueil (Dashboard)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{angular_url}}/",
+              "host": ["{{angular_url}}"],
+              "path": [""]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{angular_url}}/login",
+              "host": ["{{angular_url}}"],
+              "path": ["login"]
+            }
+          }
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{angular_url}}/register",
+              "host": ["{{angular_url}}"],
+              "path": ["register"]
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{angular_url}}/forgot-password",
+              "host": ["{{angular_url}}"],
+              "path": ["forgot-password"]
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{angular_url}}/reset-password",
+              "host": ["{{angular_url}}"],
+              "path": ["reset-password"]
+            }
+          }
+        },
+        {
+          "name": "Liste Clients",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{angular_url}}/clients",
+              "host": ["{{angular_url}}"],
+              "path": ["clients"]
+            }
+          }
+        },
+        {
+          "name": "Nouveau Client",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{angular_url}}/clients/new",
+              "host": ["{{angular_url}}"],
+              "path": ["clients", "new"]
+            }
+          }
+        },
+        {
+          "name": "Détail Client",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{angular_url}}/clients/{{client_id}}",
+              "host": ["{{angular_url}}"],
+              "path": ["clients", "{{client_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Modifier Client",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{angular_url}}/clients/{{client_id}}/edit",
+              "host": ["{{angular_url}}"],
+              "path": ["clients", "{{client_id}}", "edit"]
+            }
+          }
+        },
+        {
+          "name": "Liste Projets",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{angular_url}}/projects",
+              "host": ["{{angular_url}}"],
+              "path": ["projects"]
+            }
+          }
+        },
+        {
+          "name": "Nouveau Projet",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{angular_url}}/projects/new",
+              "host": ["{{angular_url}}"],
+              "path": ["projects", "new"]
+            }
+          }
+        },
+        {
+          "name": "Détail Projet",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{angular_url}}/projects/{{project_id}}",
+              "host": ["{{angular_url}}"],
+              "path": ["projects", "{{project_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Modifier Projet",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{angular_url}}/projects/{{project_id}}/edit",
+              "host": ["{{angular_url}}"],
+              "path": ["projects", "{{project_id}}", "edit"]
+            }
+          }
+        },
+        {
+          "name": "Profil Freelance",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{angular_url}}/profile",
+              "host": ["{{angular_url}}"],
+              "path": ["profile"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

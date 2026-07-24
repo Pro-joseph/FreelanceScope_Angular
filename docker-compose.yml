@@ -1,0 +1,10 @@
+services:
+  angular:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        API_URL: http://host.docker.internal/api
+    container_name: freelancescope-angular
+    ports:
+      - "4000:4000"
