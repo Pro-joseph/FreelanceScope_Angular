@@ -8,7 +8,6 @@
   "projects": {
     "FreelanceScope_Angular": {
       "projectType": "application",
-      "schematics": {},
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -27,13 +26,8 @@
             "styles": [
               "src/styles.css"
             ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
             "security": {
               "allowedHosts": ["localhost"]
-            },
-            "ssr": {
-              "entry": "src/server.ts"
             }
           },
           "configurations": {
@@ -53,7 +47,7 @@
               "outputHashing": "all",
               "optimization": {
                 "scripts": true,
-                "styles": false,
+                "styles": true,
                 "fonts": true
               }
             },

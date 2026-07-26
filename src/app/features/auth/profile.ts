@@ -1,4 +1,4 @@
-import { afterNextRender, Component, inject, NgZone } from '@angular/core';
+import { afterNextRender, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -10,7 +10,6 @@ import { AuthService } from '../../core/services/auth.service';
   templateUrl: './profile.html',
 })
 export class Profile {
-  private readonly ngZone = inject(NgZone);
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly http = inject(HttpClient);
@@ -29,18 +28,16 @@ export class Profile {
 
   constructor() {
     afterNextRender(() => {
-      this.ngZone.run(() => {
-        const u = this.user();
-        if (u) {
-          this.form.patchValue({
-            nom: u.nom,
-            prenom: u.prenom,
-            email: u.email,
-            telephone: u.telephone || '',
-            taux_horaire: u.taux_horaire || 0,
-          });
-        }
-      });
+      const u = this.user();
+      if (u) {
+        this.form.patchValue({
+          nom: u.nom,
+          prenom: u.prenom,
+          email: u.email,
+          telephone: u.telephone || '',
+          taux_horaire: u.taux_horaire || 0,
+        });
+      }
     });
   }
 

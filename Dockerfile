@@ -5,11 +5,8 @@ RUN npm ci
 COPY . .
 ARG API_URL=http://localhost/api
 RUN sed -i "s|http://localhost/api|$API_URL|g" src/environments/environment.ts \
-    && sed -i "s|http://localhost/api|$API_URL|g" src/environments/environment.development.ts \
     && npm run build
 
-FROM node:22-alpine
-WORKDIR /app
-COPY --from=build /app/dist/FreelanceScope_Angular ./dist
-EXPOSE 4000
-CMD ["node", "dist/server/server.mjs"]
+FROM nginx:alpine
+COPY --from=build /app/dist/FreelanceScope_Angular/browser /usr/share/nginx/html
+EXPOSE 80
