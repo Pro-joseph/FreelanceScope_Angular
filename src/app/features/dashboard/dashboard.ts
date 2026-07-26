@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { afterNextRender, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DashboardService, type DashboardStats } from '../../core/services/dashboard.service';
 
@@ -7,12 +7,14 @@ import { DashboardService, type DashboardStats } from '../../core/services/dashb
   imports: [RouterLink],
   templateUrl: './dashboard.html',
 })
-export class Dashboard implements OnInit {
+export class Dashboard {
   private readonly dashboardService = inject(DashboardService);
 
-  stats: DashboardStats | null = null;
+  readonly stats = signal<DashboardStats | null>(null);
 
-  ngOnInit() {
-    this.dashboardService.stats().subscribe((s) => (this.stats = s));
+  constructor() {
+    afterNextRender(() => {
+      this.dashboardService.stats().subscribe((s) => this.stats.set(s));
+    });
   }
 }

@@ -1,14 +1,16 @@
 import { inject } from '@angular/core';
 import { Router, type CanActivateFn } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
-const isBrowser = typeof localStorage !== 'undefined';
-
-export const authGuard: CanActivateFn = () => {
+export const authGuard: CanActivateFn = async () => {
   const router = inject(Router);
-  if (!isBrowser) return true;
-  const token = localStorage.getItem('auth_token');
-  if (!token) {
-    return router.parseUrl('/login');
-  }
-  return true;
+  const authService = inject(AuthService);
+
+  if (typeof localStorage === 'undefined') return true;
+
+  await authService.init();
+
+  if (authService.isAuthenticated()) return true;
+
+  return router.parseUrl('/login');
 };

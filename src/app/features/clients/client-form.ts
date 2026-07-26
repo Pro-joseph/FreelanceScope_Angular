@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { afterNextRender, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClientService } from '../../core/services/client.service';
@@ -8,7 +8,8 @@ import { ClientService } from '../../core/services/client.service';
   imports: [RouterLink, ReactiveFormsModule],
   templateUrl: './client-form.html',
 })
-export class ClientForm implements OnInit {
+export class ClientForm {
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly fb = inject(FormBuilder);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -23,12 +24,15 @@ export class ClientForm implements OnInit {
   isEdit = false;
   error = '';
 
-  ngOnInit() {
+  constructor() {
     const id = this.route.snapshot.params['id'];
     if (id) {
       this.isEdit = true;
-      this.clientService.get(id).subscribe((client) => {
-        this.form.patchValue(client);
+      afterNextRender(() => {
+        this.clientService.get(id).subscribe((client) => {
+          this.form.patchValue(client);
+          this.cdr.markForCheck();
+        });
       });
     }
   }

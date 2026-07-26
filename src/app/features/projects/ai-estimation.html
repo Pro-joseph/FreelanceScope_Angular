@@ -28,7 +28,7 @@
   </div>
 
   <div class="space-y-4">
-    @for (analysis of analyses; track analysis.id) {
+    @for (analysis of analyses(); track analysis.id) {
       <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div class="flex items-center justify-between mb-2">
           <p class="text-sm text-gray-500">Analyse #{{ analysis.id }}</p>

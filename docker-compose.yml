@@ -4,7 +4,13 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        API_URL: http://host.docker.internal/api
+        API_URL: http://localhost/api
     container_name: freelancescope-angular
     ports:
       - "4000:4000"
+    networks:
+      - shared_net
+
+networks:
+  shared_net:
+    external: true

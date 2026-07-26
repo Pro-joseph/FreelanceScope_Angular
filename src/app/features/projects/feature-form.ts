@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ProjectService } from '../../core/services/project.service';
@@ -8,7 +8,7 @@ import { ProjectService } from '../../core/services/project.service';
   imports: [RouterLink, ReactiveFormsModule],
   templateUrl: './feature-form.html',
 })
-export class FeatureForm implements OnInit {
+export class FeatureForm {
   private readonly fb = inject(FormBuilder);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -24,7 +24,7 @@ export class FeatureForm implements OnInit {
   featureId = 0;
   error = '';
 
-  ngOnInit() {
+  constructor() {
     this.projectId = +this.route.snapshot.params['id'];
     this.featureId = +this.route.snapshot.params['featureId'];
   }

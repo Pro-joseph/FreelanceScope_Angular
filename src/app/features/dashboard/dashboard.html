@@ -4,15 +4,15 @@
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     <a routerLink="/clients" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <p class="text-sm font-medium text-gray-500">Clients</p>
-      <p class="text-3xl font-bold text-gray-900 mt-1">{{ stats?.clients_count ?? '—' }}</p>
+      <p class="text-3xl font-bold text-gray-900 mt-1">{{ stats()?.clients_count ?? '—' }}</p>
     </a>
     <a routerLink="/projects" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <p class="text-sm font-medium text-gray-500">Projets</p>
-      <p class="text-3xl font-bold text-gray-900 mt-1">{{ stats?.projects_count ?? '—' }}</p>
+      <p class="text-3xl font-bold text-gray-900 mt-1">{{ stats()?.projects_count ?? '—' }}</p>
     </a>
     <a routerLink="/projects" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <p class="text-sm font-medium text-gray-500">Devis</p>
-      <p class="text-3xl font-bold text-gray-900 mt-1">{{ stats?.devis_count ?? '—' }}</p>
+      <p class="text-3xl font-bold text-gray-900 mt-1">{{ stats()?.devis_count ?? '—' }}</p>
     </a>
   </div>
 </div>

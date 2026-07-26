@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { afterNextRender, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -10,7 +10,8 @@ import type { User } from '../../core/models';
   imports: [RouterLink, ReactiveFormsModule],
   templateUrl: './freelance-edit.html',
 })
-export class FreelanceEdit implements OnInit {
+export class FreelanceEdit {
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly fb = inject(FormBuilder);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -28,9 +29,12 @@ export class FreelanceEdit implements OnInit {
 
   error = '';
 
-  ngOnInit() {
-    this.http.get<User>(`${environment.apiUrl}/admin/freelances/${this.id}`).subscribe((f) => {
-      this.form.patchValue(f);
+  constructor() {
+    afterNextRender(() => {
+      this.http.get<User>(`${environment.apiUrl}/admin/freelances/${this.id}`).subscribe((f) => {
+        this.form.patchValue(f);
+        this.cdr.markForCheck();
+      });
     });
   }
 

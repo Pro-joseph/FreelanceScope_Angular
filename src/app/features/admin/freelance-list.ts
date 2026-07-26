@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { afterNextRender, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -9,14 +9,16 @@ import type { User } from '../../core/models';
   imports: [RouterLink],
   templateUrl: './freelance-list.html',
 })
-export class FreelanceList implements OnInit {
+export class FreelanceList {
   private readonly http = inject(HttpClient);
 
-  freelances: User[] = [];
+  readonly freelances = signal<User[]>([]);
 
-  ngOnInit() {
-    this.http
-      .get<User[]>(`${environment.apiUrl}/admin/freelances`)
-      .subscribe((f) => (this.freelances = f));
+  constructor() {
+    afterNextRender(() => {
+      this.http
+        .get<User[]>(`${environment.apiUrl}/admin/freelances`)
+        .subscribe((f) => this.freelances.set(f));
+    });
   }
 }

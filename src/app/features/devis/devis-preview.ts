@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { afterNextRender, Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DevisService } from '../../core/services/devis.service';
 import type { Devis } from '../../core/models';
@@ -8,17 +8,19 @@ import type { Devis } from '../../core/models';
   imports: [RouterLink],
   templateUrl: './devis-preview.html',
 })
-export class DevisPreview implements OnInit {
+export class DevisPreview {
   private readonly route = inject(ActivatedRoute);
   private readonly devisService = inject(DevisService);
 
   protected readonly projectId = +this.route.snapshot.params['id'];
   protected readonly devisId = +this.route.snapshot.params['devisId'];
 
-  devis: Devis | null = null;
+  readonly devis = signal<Devis | null>(null);
 
-  ngOnInit() {
-    this.devisService.get(this.projectId, this.devisId).subscribe((d) => (this.devis = d));
+  constructor() {
+    afterNextRender(() => {
+      this.devisService.get(this.projectId, this.devisId).subscribe((d) => this.devis.set(d));
+    });
   }
 
   downloadPdf() {

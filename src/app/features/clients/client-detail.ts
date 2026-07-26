@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { afterNextRender, Component, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ClientService } from '../../core/services/client.service';
@@ -9,14 +9,16 @@ import type { Client } from '../../core/models';
   imports: [RouterLink, DatePipe],
   templateUrl: './client-detail.html',
 })
-export class ClientDetail implements OnInit {
+export class ClientDetail {
   private readonly route = inject(ActivatedRoute);
   private readonly clientService = inject(ClientService);
 
-  client: Client | null = null;
+  readonly client = signal<Client | null>(null);
 
-  ngOnInit() {
+  constructor() {
     const id = this.route.snapshot.params['id'];
-    this.clientService.get(id).subscribe((c) => (this.client = c));
+    afterNextRender(() => {
+      this.clientService.get(id).subscribe((c) => this.client.set(c));
+    });
   }
 }

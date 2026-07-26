@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { afterNextRender, ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProjectService } from '../../core/services/project.service';
@@ -10,7 +10,8 @@ import type { Client } from '../../core/models';
   imports: [RouterLink, ReactiveFormsModule],
   templateUrl: './project-form.html',
 })
-export class ProjectForm implements OnInit {
+export class ProjectForm {
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly fb = inject(FormBuilder);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -24,18 +25,23 @@ export class ProjectForm implements OnInit {
     status: ['draft'],
   });
 
-  clients: Client[] = [];
+  readonly clients = signal<Client[]>([]);
   isEdit = false;
   error = '';
 
-  ngOnInit() {
-    this.clientService.list().subscribe((c) => (this.clients = c));
+  constructor() {
+    afterNextRender(() => {
+      this.clientService.list().subscribe((c) => this.clients.set(c));
+    });
 
     const id = this.route.snapshot.params['id'];
     if (id) {
       this.isEdit = true;
-      this.projectService.get(id).subscribe((project) => {
-        this.form.patchValue(project);
+      afterNextRender(() => {
+        this.projectService.get(id).subscribe((project) => {
+          this.form.patchValue(project);
+          this.cdr.markForCheck();
+        });
       });
     }
 

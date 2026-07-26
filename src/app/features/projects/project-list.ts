@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { afterNextRender, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProjectService } from '../../core/services/project.service';
 import type { Project } from '../../core/models';
@@ -8,12 +8,14 @@ import type { Project } from '../../core/models';
   imports: [RouterLink],
   templateUrl: './project-list.html',
 })
-export class ProjectList implements OnInit {
+export class ProjectList {
   private readonly projectService = inject(ProjectService);
 
-  projects: Project[] = [];
+  readonly projects = signal<Project[]>([]);
 
-  ngOnInit() {
-    this.projectService.list().subscribe((p) => (this.projects = p));
+  constructor() {
+    afterNextRender(() => {
+      this.projectService.list().subscribe((p) => this.projects.set(p));
+    });
   }
 }

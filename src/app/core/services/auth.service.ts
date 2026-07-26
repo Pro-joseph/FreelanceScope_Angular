@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs';
+import { finalize, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import type { User } from '../models';
 
@@ -29,6 +29,25 @@ export class AuthService {
 
   readonly user = signal<User | null>(isBrowser ? this.getStoredUser() : null);
   readonly isAuthenticated = signal(isBrowser && !!localStorage.getItem('auth_token'));
+  private checked = false;
+
+  async init() {
+    if (!isBrowser || this.checked) return;
+    this.checked = true;
+
+    if (this.isAuthenticated()) return;
+
+    try {
+      const user = await this.http.get<User>(`${this.apiUrl}/me`).toPromise();
+      if (user) {
+        this.user.set(user);
+        this.isAuthenticated.set(true);
+      }
+    } catch {
+      this.user.set(null);
+      this.isAuthenticated.set(false);
+    }
+  }
 
   login(email: string, password: string) {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password }).pipe(
@@ -78,7 +97,7 @@ export class AuthService {
 
   logout() {
     return this.http.post(`${this.apiUrl}/logout`, {}).pipe(
-      tap(() => this.clearSession()),
+      finalize(() => this.clearSession()),
     );
   }
 

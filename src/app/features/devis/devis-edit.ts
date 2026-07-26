@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { afterNextRender, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DevisService } from '../../core/services/devis.service';
@@ -8,7 +8,8 @@ import { DevisService } from '../../core/services/devis.service';
   imports: [RouterLink, ReactiveFormsModule],
   templateUrl: './devis-edit.html',
 })
-export class DevisEdit implements OnInit {
+export class DevisEdit {
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly fb = inject(FormBuilder);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -25,12 +26,15 @@ export class DevisEdit implements OnInit {
 
   error = '';
 
-  ngOnInit() {
-    this.devisService.get(this.projectId, this.devisId).subscribe((devis) => {
-      this.form.patchValue({
-        conditions: devis.conditions || '',
-        total_amount: devis.total_amount,
-        status: devis.status,
+  constructor() {
+    afterNextRender(() => {
+      this.devisService.get(this.projectId, this.devisId).subscribe((devis) => {
+        this.form.patchValue({
+          conditions: devis.conditions || '',
+          total_amount: devis.total_amount,
+          status: devis.status,
+        });
+        this.cdr.markForCheck();
       });
     });
   }
