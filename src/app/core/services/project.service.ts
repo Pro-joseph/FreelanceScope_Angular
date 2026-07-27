@@ -29,6 +29,10 @@ export class ProjectService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
+  getFeature(featureId: number) {
+    return this.http.get<{ data: ProjectFeature }>(`${environment.apiUrl}/features/${featureId}`).pipe(map(r => r.data));
+  }
+
   getFeatures(projectId: number) {
     return this.http.get<{ data: ProjectFeature[] }>(`${this.apiUrl}/${projectId}/features`).pipe(map(r => r.data));
   }

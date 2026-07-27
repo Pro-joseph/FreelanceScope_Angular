@@ -70,5 +70,29 @@
         + Générer un devis
       </a>
     </div>
+
+    <div class="space-y-2">
+      @for (devis of devisList(); track devis.id) {
+        <div class="bg-white rounded-lg border border-gray-200 p-4 flex items-center justify-between">
+          <div>
+            <p class="font-medium text-gray-900">Devis #{{ devis.id }}</p>
+            <p class="text-sm text-gray-500">{{ devis.total_amount }}€ — {{ devis.status }}</p>
+          </div>
+          <div class="flex gap-3">
+            <button (click)="downloadPdf(devis.id)" class="text-sm text-indigo-600 hover:text-indigo-800">
+              Télécharger
+            </button>
+            <a [routerLink]="['/projects', project()?.id, 'devis', devis.id]" class="text-sm text-indigo-600 hover:text-indigo-800">
+              Voir
+            </a>
+            <a [routerLink]="['/projects', project()?.id, 'devis', devis.id, 'edit']" class="text-sm text-gray-600 hover:text-gray-800">
+              Modifier
+            </a>
+          </div>
+        </div>
+      } @empty {
+        <p class="text-gray-500 text-sm">Aucun devis. Cliquez sur "Générer un devis" pour en créer un.</p>
+      }
+    </div>
   </div>
 </div>

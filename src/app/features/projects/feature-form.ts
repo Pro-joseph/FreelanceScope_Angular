@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { afterNextRender, Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ProjectService } from '../../core/services/project.service';
@@ -27,6 +27,21 @@ export class FeatureForm {
   constructor() {
     this.projectId = +this.route.snapshot.params['id'];
     this.featureId = +this.route.snapshot.params['featureId'];
+
+    afterNextRender(() => {
+      this.projectService.getFeature(this.featureId).subscribe({
+        next: (feature) => {
+          this.form.patchValue({
+            name: feature.name,
+            description: feature.description,
+            complexity: feature.complexity,
+          });
+        },
+        error: () => {
+          this.error = "Impossible de charger la fonctionnalité";
+        },
+      });
+    });
   }
 
   submit() {
