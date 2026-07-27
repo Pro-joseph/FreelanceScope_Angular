@@ -1,59 +1,103 @@
-# FreelanceScopeAngular
+# FreelanceScope — Angular Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.4.
+Application de gestion pour freelances : clients, projets, estimation IA, devis PDF.
 
-## Development server
+**Stack :** Angular 22+ · Standalone components · Signals · Tailwind CSS · Vitest
 
-To start a local development server, run:
+---
+
+## Démarrage rapide (Docker)
 
 ```bash
+docker-compose up -d
+```
+
+L'application est servie sur `http://localhost:4000` avec proxy API vers `http://localhost:80/api`.
+
+---
+
+## Installation locale
+
+```bash
+npm install
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Ouvrir `http://localhost:4200/`. Le proxy API est configuré dans `angular.json` (proxy vers `http://localhost:8000/api`).
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+## Build
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Les artefacts sont dans `dist/`.
 
-## Running unit tests
+---
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Structure du projet
+
+```
+src/app/
+├── core/
+│   ├── models/          Interfaces TypeScript (User, Client, Project, ProjectFeature, Estimate, Devis, AiAnalysis)
+│   ├── services/        ClientService, ProjectService, AuthService, DevisService, AiService, DashboardService
+│   ├── guards/          auth.guard, role.guard
+│   └── interceptors/    Sanctum token interceptor
+├── features/
+│   ├── auth/            Login, Register, Forgot / Reset password
+│   ├── dashboard/       Tableau de bord freelance
+│   ├── clients/         Liste, formulaire, détail
+│   ├── projects/        Liste, formulaire, détail, features, estimation IA
+│   ├── devis/           Génération, édition, aperçu
+│   └── admin/           Gestion des freelances (admin)
+└── shared/
+    └── components/      Status badges, tags, etc.
+```
+
+---
+
+## Pages
+
+| Route | Page | Accès |
+|-------|------|-------|
+| `/login` | Connexion | public |
+| `/register` | Inscription | public |
+| `/forgot-password` | Mot de passe oublié | public |
+| `/reset-password/:token` | Nouveau mot de passe | public |
+| `/dashboard` | Tableau de bord | freelance |
+| `/profile` | Mon profil | freelance |
+| `/clients` | Liste clients | freelance |
+| `/clients/new` | Nouveau client | freelance |
+| `/clients/:id` | Détail client | freelance |
+| `/clients/:id/edit` | Modifier client | freelance |
+| `/projects` | Liste projets | freelance |
+| `/projects/new` | Nouveau projet | freelance |
+| `/projects/:id` | Détail projet | freelance |
+| `/projects/:id/edit` | Modifier projet | freelance |
+| `/projects/:id/ai-estimation` | Estimation IA | freelance |
+| `/projects/:id/features/:featureId/edit` | Modifier fonctionnalité | freelance |
+| `/projects/:id/devis/new` | Générer devis | freelance |
+| `/projects/:id/devis/:devisId` | Aperçu devis | freelance |
+| `/projects/:id/devis/:devisId/edit` | Modifier devis | freelance |
+| `/admin/freelances` | Liste freelances | admin |
+| `/admin/freelances/:id/edit` | Modifier freelance | admin |
+
+---
+
+## Tests
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
+Tests unitaires avec Vitest.
 
-For end-to-end (e2e) testing, run:
+---
 
-```bash
-ng e2e
-```
+## Documentation complète
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- [Spécification Angular](spec/FreelanceScope_Angular_Spec.md)
+- [Postman collection](spec/FreelanceScope.postman_collection.json)
