@@ -16,7 +16,7 @@ export class DevisGenerate {
   private readonly devisService = inject(DevisService);
   private readonly notify = inject(NotificationService);
 
-  protected readonly projectId = +this.route.snapshot.params['id'];
+  protected readonly projectId = +(this.route.snapshot.params['id'] ?? this.route.parent?.snapshot.params['id']);
 
   readonly form = this.fb.nonNullable.group({
     conditions: [''],

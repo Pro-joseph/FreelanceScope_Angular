@@ -12,7 +12,7 @@ export class DevisPreview {
   private readonly route = inject(ActivatedRoute);
   private readonly devisService = inject(DevisService);
 
-  protected readonly projectId = +this.route.snapshot.params['id'];
+  protected readonly projectId = +(this.route.snapshot.params['id'] ?? this.route.parent?.snapshot.params['id']);
   protected readonly devisId = +this.route.snapshot.params['devisId'];
 
   readonly devis = signal<Devis | null>(null);
