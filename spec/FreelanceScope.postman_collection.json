@@ -558,9 +558,9 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{base_url}}/freelance/dashboard",
+              "raw": "{{base_url}}/dashboard/stats",
               "host": ["{{base_url}}"],
-              "path": ["freelance", "dashboard"]
+              "path": ["dashboard", "stats"]
             }
           }
         }
