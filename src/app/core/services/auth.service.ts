@@ -35,17 +35,17 @@ export class AuthService {
     if (!isBrowser || this.checked) return;
     this.checked = true;
 
-    if (this.isAuthenticated()) return;
+    if (!this.isAuthenticated()) return;
 
     try {
       const user = await this.http.get<User>(`${this.apiUrl}/me`).toPromise();
       if (user) {
+        localStorage.setItem('user', JSON.stringify(user));
         this.user.set(user);
         this.isAuthenticated.set(true);
       }
     } catch {
-      this.user.set(null);
-      this.isAuthenticated.set(false);
+      this.clearSession();
     }
   }
 
