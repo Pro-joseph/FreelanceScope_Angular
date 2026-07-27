@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProjectService } from '../../core/services/project.service';
 import { ClientService } from '../../core/services/client.service';
+import { NotificationService } from '../../shared/services/notification.service';
 import type { Client } from '../../core/models';
 
 @Component({
@@ -17,6 +18,7 @@ export class ProjectForm {
   private readonly router = inject(Router);
   private readonly projectService = inject(ProjectService);
   private readonly clientService = inject(ClientService);
+  private readonly notify = inject(NotificationService);
 
   readonly form = this.fb.nonNullable.group({
     client_id: [0, Validators.required],
@@ -62,7 +64,10 @@ export class ProjectForm {
       : this.projectService.create(data);
 
     request.subscribe({
-      next: (project) => this.router.navigate(['/projects', project.id]),
+      next: (project) => {
+        this.notify.success(this.isEdit ? 'Projet modifié' : 'Projet créé');
+        this.router.navigate(['/projects', project.id]);
+      },
       error: (err) => {
         this.error = err.error?.message || "Erreur lors de la sauvegarde du projet";
       },

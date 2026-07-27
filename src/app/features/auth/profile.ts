@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../core/services/auth.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @Component({
   selector: 'app-profile',
@@ -13,6 +14,7 @@ export class Profile {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly http = inject(HttpClient);
+  private readonly notify = inject(NotificationService);
 
   readonly user = this.authService.user;
 
@@ -47,9 +49,11 @@ export class Profile {
       .put(`${environment.apiUrl}/freelance/profile`, this.form.getRawValue())
       .subscribe({
         next: (res: any) => {
-          if (res) {
-            this.authService.user.set(res);
+          const data = res?.data ?? res;
+          if (data) {
+            this.authService.user.set(data);
           }
+          this.notify.success('Profil mis à jour');
         },
         error: (err) => {
           this.error = err.error?.message || "Erreur lors de la sauvegarde";

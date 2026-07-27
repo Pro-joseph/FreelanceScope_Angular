@@ -2,6 +2,7 @@ import { afterNextRender, ChangeDetectorRef, Component, inject } from '@angular/
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClientService } from '../../core/services/client.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @Component({
   selector: 'app-client-form',
@@ -14,6 +15,7 @@ export class ClientForm {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly clientService = inject(ClientService);
+  private readonly notify = inject(NotificationService);
 
   readonly form = this.fb.nonNullable.group({
     company_name: ['', Validators.required],
@@ -48,7 +50,10 @@ export class ClientForm {
       : this.clientService.create(data);
 
     request.subscribe({
-      next: () => this.router.navigate(['/clients']),
+      next: () => {
+        this.notify.success(this.isEdit ? 'Client modifié' : 'Client créé');
+        this.router.navigate(['/clients']);
+      },
       error: (err) => {
         this.error = err.error?.message || 'Erreur lors de la sauvegarde';
       },

@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @Component({
   selector: 'app-register',
@@ -12,6 +13,7 @@ export class Register {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly notify = inject(NotificationService);
 
   readonly form = this.fb.nonNullable.group({
     nom: ['', Validators.required],
@@ -32,7 +34,10 @@ export class Register {
     }
     this.error = '';
     this.authService.register(this.form.getRawValue() as any).subscribe({
-      next: () => this.router.navigate(['/dashboard']),
+      next: () => {
+        this.notify.success('Inscription réussie');
+        this.router.navigate(['/dashboard']);
+      },
       error: (err) => {
         this.error = err.error?.message || "Erreur lors de l'inscription";
       },

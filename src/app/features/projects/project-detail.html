@@ -9,6 +9,9 @@
       <a [routerLink]="['/projects', project()?.id, 'edit']" class="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
         Modifier
       </a>
+      <button (click)="delete()" class="px-3 py-1.5 text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors">
+        Supprimer
+      </button>
     </div>
   </div>
 

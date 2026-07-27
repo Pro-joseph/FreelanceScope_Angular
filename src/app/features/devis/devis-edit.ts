@@ -2,6 +2,7 @@ import { afterNextRender, ChangeDetectorRef, Component, inject } from '@angular/
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DevisService } from '../../core/services/devis.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @Component({
   selector: 'app-devis-edit',
@@ -14,6 +15,7 @@ export class DevisEdit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly devisService = inject(DevisService);
+  private readonly notify = inject(NotificationService);
 
   protected readonly projectId = +this.route.snapshot.params['id'];
   protected readonly devisId = +this.route.snapshot.params['devisId'];
@@ -45,7 +47,10 @@ export class DevisEdit {
     this.devisService
       .update(this.projectId, this.devisId, this.form.getRawValue() as any)
       .subscribe({
-        next: () => this.router.navigate(['/projects', this.projectId, 'devis', this.devisId]),
+        next: () => {
+          this.notify.success('Devis modifié');
+          this.router.navigate(['/projects', this.projectId, 'devis', this.devisId]);
+        },
         error: (err) => {
           this.error = err.error?.message || "Erreur lors de la mise à jour";
         },

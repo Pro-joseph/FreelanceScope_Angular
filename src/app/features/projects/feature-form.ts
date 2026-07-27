@@ -2,6 +2,7 @@ import { afterNextRender, Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ProjectService } from '../../core/services/project.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @Component({
   selector: 'app-feature-form',
@@ -13,6 +14,7 @@ export class FeatureForm {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly projectService = inject(ProjectService);
+  private readonly notify = inject(NotificationService);
 
   readonly form = this.fb.nonNullable.group({
     name: [''],
@@ -49,7 +51,10 @@ export class FeatureForm {
     this.projectService
       .updateFeature(this.projectId, this.featureId, this.form.getRawValue() as any)
       .subscribe({
-        next: () => this.router.navigate(['/projects', this.projectId]),
+        next: () => {
+          this.notify.success('Fonctionnalité mise à jour');
+          this.router.navigate(['/projects', this.projectId]);
+        },
         error: (err) => {
           this.error = err.error?.message || "Erreur lors de la mise à jour";
         },
