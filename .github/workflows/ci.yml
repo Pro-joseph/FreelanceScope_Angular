@@ -30,3 +30,18 @@ jobs:
           tags: |
             joseph0070/freelancescope:angular-latest
             joseph0070/freelancescope:angular-${{ github.sha }}
+
+  deploy:
+    needs: build-and-push
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: 35.181.137.137
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /opt/freelancescope
+            docker compose pull
+            docker compose up -d
