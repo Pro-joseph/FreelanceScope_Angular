@@ -26,7 +26,7 @@ jobs:
           context: .
           push: true
           build-args: |
-            API_URL=http://localhost/api
+            API_URL=http://35.181.137.137/api
           tags: |
             joseph0070/freelancescope:angular-latest
             joseph0070/freelancescope:angular-${{ github.sha }}
