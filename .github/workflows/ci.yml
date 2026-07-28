@@ -1,0 +1,58 @@
+name: Angular CI/CD
+
+on:
+  push:
+    branches: ["master"]
+    paths: ["FreelanceScope_Angular/**"]
+  pull_request:
+    branches: ["master"]
+    paths: ["FreelanceScope_Angular/**"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: FreelanceScope_Angular
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: FreelanceScope_Angular/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test -- --watch=false --browsers=ChromeHeadless
+
+  build-and-push:
+    needs: test
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: FreelanceScope_Angular
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: FreelanceScope_Angular
+          push: true
+          build-args: |
+            API_URL=https://localhost/api
+          tags: |
+            joseph0070/freelancescope:angular-latest
+            joseph0070/freelancescope:angular-${{ github.sha }}
