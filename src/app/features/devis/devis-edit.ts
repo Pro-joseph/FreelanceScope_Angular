@@ -30,13 +30,18 @@ export class DevisEdit {
 
   constructor() {
     afterNextRender(() => {
-      this.devisService.get(this.projectId, this.devisId).subscribe((devis) => {
-        this.form.patchValue({
-          conditions: devis.conditions || '',
-          total_amount: devis.total_amount,
-          status: devis.status,
-        });
-        this.cdr.markForCheck();
+      this.devisService.get(this.projectId, this.devisId).subscribe({
+        next: (devis) => {
+          this.form.patchValue({
+            conditions: devis.conditions || '',
+            total_amount: devis.total_amount,
+            status: devis.status,
+          });
+          this.cdr.markForCheck();
+        },
+        error: () => {
+          this.error = 'Impossible de charger le devis';
+        },
       });
     });
   }

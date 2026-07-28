@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ProjectService } from '../../core/services/project.service';
 import { NotificationService } from '../../shared/services/notification.service';
+import { of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-feature-form',
@@ -20,10 +21,13 @@ export class FeatureForm {
     name: [''],
     description: [''],
     complexity: ['moyen' as 'simple' | 'moyen' | 'complexe'],
+    hourly_rate: [0],
+    total_hours: [0],
   });
 
   projectId = 0;
   featureId = 0;
+  estimateId = 0;
   error = '';
 
   constructor() {
@@ -43,19 +47,44 @@ export class FeatureForm {
           this.error = "Impossible de charger la fonctionnalité";
         },
       });
+      this.projectService.getEstimate(this.featureId).subscribe({
+        next: (estimate) => {
+          this.estimateId = estimate.id;
+          this.form.patchValue({
+            hourly_rate: estimate.hourly_rate,
+            total_hours: estimate.total_hours,
+          });
+        },
+      });
     });
   }
 
   submit() {
     this.error = '';
+
+    const data = this.form.getRawValue();
+
     this.projectService
-      .updateFeature(this.projectId, this.featureId, this.form.getRawValue() as any)
+      .updateFeature(this.projectId, this.featureId, {
+        name: data.name,
+        description: data.description,
+        complexity: data.complexity,
+      })
+      .pipe(
+        switchMap(() => {
+          if (!this.estimateId) return of(null);
+          return this.projectService.updateEstimate(this.estimateId, {
+            hourly_rate: data.hourly_rate,
+            total_hours: data.total_hours,
+          });
+        }),
+      )
       .subscribe({
         next: () => {
           this.notify.success('Fonctionnalité mise à jour');
           this.router.navigate(['/projects', this.projectId]);
         },
-        error: (err) => {
+        error: (err: any) => {
           this.error = err.error?.message || "Erreur lors de la mise à jour";
         },
       });

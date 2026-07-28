@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import type { Project, ProjectFeature } from '../models';
+import type { Estimate, Project, ProjectFeature } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectService {
@@ -49,5 +49,17 @@ export class ProjectService {
       `${this.apiUrl}/${projectId}/features/${featureId}`,
       data,
     ).pipe(map(r => r.data));
+  }
+
+  deleteFeature(featureId: number) {
+    return this.http.delete(`${environment.apiUrl}/features/${featureId}`);
+  }
+
+  getEstimate(featureId: number) {
+    return this.http.get<{ data: Estimate }>(`${environment.apiUrl}/features/${featureId}/estimate`).pipe(map(r => r.data));
+  }
+
+  updateEstimate(estimateId: number, data: Partial<Estimate>) {
+    return this.http.put<{ data: Estimate }>(`${environment.apiUrl}/estimates/${estimateId}`, data).pipe(map(r => r.data));
   }
 }

@@ -2,6 +2,12 @@
   <h1 class="text-2xl font-bold text-gray-900 mb-6">Tableau de bord</h1>
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    @if (stats()?.freelances_count != null) {
+      <a routerLink="/admin/freelances" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+        <p class="text-sm font-medium text-gray-500">Freelances</p>
+        <p class="text-3xl font-bold text-gray-900 mt-1">{{ stats()?.freelances_count ?? '—' }}</p>
+      </a>
+    }
     <a routerLink="/clients" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <p class="text-sm font-medium text-gray-500">Clients</p>
       <p class="text-3xl font-bold text-gray-900 mt-1">{{ stats()?.clients_count ?? '—' }}</p>

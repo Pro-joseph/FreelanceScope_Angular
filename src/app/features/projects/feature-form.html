@@ -26,6 +26,22 @@
           <option value="complexe">Complexe</option>
         </select>
       </div>
+      <div class="border-t border-gray-200 pt-4">
+        <h3 class="text-sm font-semibold text-gray-900 mb-3">Estimation des coûts</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Taux horaire (€)</label>
+            <input type="number" formControlName="hourly_rate" min="0" step="0.5" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Heures estimées</label>
+            <input type="number" formControlName="total_hours" min="0" step="0.5" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" />
+          </div>
+        </div>
+        <p class="text-sm text-gray-500 mt-2">
+          Montant total : <strong class="text-gray-900">{{ (form.getRawValue().hourly_rate || 0) * (form.getRawValue().total_hours || 0) }} €</strong>
+        </p>
+      </div>
       <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
         Enregistrer
       </button>

@@ -41,6 +41,16 @@ export class ProjectDetail {
     });
   }
 
+  deleteFeature(featureId: number) {
+    if (!confirm('Supprimer cette fonctionnalité ?')) return;
+    this.projectService.deleteFeature(featureId).subscribe({
+      next: () => {
+        this.project.update(p => p ? { ...p, features: p.features?.filter(f => f.id !== featureId) ?? [] } : p);
+        this.notify.success('Fonctionnalité supprimée');
+      },
+    });
+  }
+
   downloadPdf(devisId: number) {
     this.devisService.downloadPdf(this.projectId, devisId).subscribe((blob) => {
       const url = window.URL.createObjectURL(blob);
