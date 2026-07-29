@@ -1,5 +1,6 @@
-import { afterNextRender, Component, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProjectService } from '../../core/services/project.service';
 import { DevisService } from '../../core/services/devis.service';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -20,12 +21,11 @@ export class ProjectDetail {
   readonly project = signal<Project | null>(null);
   readonly devisList = signal<Devis[]>([]);
 
-  protected readonly projectId = +this.route.snapshot.params['id'];
-
   constructor() {
-    afterNextRender(() => {
-      this.projectService.get(this.projectId).subscribe((p) => this.project.set(p));
-      this.devisService.list(this.projectId).subscribe((d) => this.devisList.set(d));
+    this.route.params.pipe(takeUntilDestroyed()).subscribe(params => {
+      const id = +params['id'];
+      this.projectService.get(id).subscribe(p => this.project.set(p));
+      this.devisService.list(id).subscribe(d => this.devisList.set(d));
     });
   }
 
@@ -33,7 +33,7 @@ export class ProjectDetail {
     const project = this.project();
     if (!project) return;
     if (!confirm('Supprimer ce projet ? Cette action est irréversible.')) return;
-    this.projectService.delete(this.projectId).subscribe({
+    this.projectService.delete(+this.route.snapshot.params['id']).subscribe({
       next: () => {
         this.notify.success('Projet supprimé');
         this.router.navigate(['/projects']);
@@ -52,7 +52,7 @@ export class ProjectDetail {
   }
 
   downloadPdf(devisId: number) {
-    this.devisService.downloadPdf(this.projectId, devisId).subscribe((blob) => {
+    this.devisService.downloadPdf(+this.route.snapshot.params['id'], devisId).subscribe((blob) => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
