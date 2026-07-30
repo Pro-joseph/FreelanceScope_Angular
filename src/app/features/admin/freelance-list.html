@@ -21,7 +21,7 @@
             <tr class="border-b border-gray-100 hover:bg-gray-50">
               <td class="px-4 py-3">{{ freelance.prenom }} {{ freelance.nom }}</td>
               <td class="px-4 py-3 text-gray-600">{{ freelance.email }}</td>
-              <td class="px-4 py-3">{{ freelance.taux_horaire ? freelance.taux_horaire + '€/h' : '—' }}</td>
+              <td class="px-4 py-3">{{ freelance.taux_horaire ? freelance.taux_horaire + 'DH/h' : '—' }}</td>
               <td class="px-4 py-3">
                 <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium"
                   [class.bg-green-100]="freelance.statut === 'actif'"

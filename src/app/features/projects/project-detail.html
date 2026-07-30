@@ -53,7 +53,7 @@
               <span class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600">{{ feature.complexity }}</span>
             }
             @if (feature.estimate) {
-              <span class="text-sm font-medium text-gray-700">{{ feature.estimate.total_amount }}€</span>
+              <span class="text-sm font-medium text-gray-700">{{ feature.estimate.total_amount }} DH</span>
             }
             <button (click)="deleteFeature(feature.id)" class="text-sm text-red-600 hover:text-red-800">Supprimer</button>
             <a [routerLink]="['/projects', project()?.id, 'features', feature.id, 'edit']" class="text-sm text-indigo-600 hover:text-indigo-800">
@@ -80,7 +80,7 @@
         <div class="bg-white rounded-lg border border-gray-200 p-4 flex items-center justify-between">
           <div>
             <p class="font-medium text-gray-900">Devis #{{ devis.id }}</p>
-            <p class="text-sm text-gray-500">{{ devis.total_amount }}€ — {{ devis.status }}</p>
+            <p class="text-sm text-gray-500">{{ devis.total_amount }} DH — {{ devis.status }}</p>
           </div>
           <div class="flex gap-3">
             <button (click)="downloadPdf(devis.id)" class="text-sm text-indigo-600 hover:text-indigo-800">

@@ -44,9 +44,9 @@
                 <tr class="border-b border-gray-100 text-sm">
                   <td class="py-2 text-gray-900">{{ feat.name }}</td>
                   <td class="py-2 text-gray-500">{{ feat.complexity }}</td>
-                  <td class="py-2 text-right">{{ feat.hourly_rate ? feat.hourly_rate + '€' : '—' }}</td>
+                  <td class="py-2 text-right">{{ feat.hourly_rate ? feat.hourly_rate + ' DH' : '—' }}</td>
                   <td class="py-2 text-right">{{ feat.total_hours ? feat.total_hours + 'h' : '—' }}</td>
-                  <td class="py-2 text-right font-medium">{{ feat.total_amount ? feat.total_amount + '€' : '—' }}</td>
+                  <td class="py-2 text-right font-medium">{{ feat.total_amount ? feat.total_amount + ' DH' : '—' }}</td>
                 </tr>
               }
             </tbody>
@@ -58,7 +58,7 @@
       <div class="border-t border-gray-200 pt-4">
         <div class="flex justify-between text-lg font-bold text-gray-900">
           <span>Total</span>
-          <span>{{ devis()!.total_amount }}€</span>
+          <span>{{ devis()!.total_amount }} DH</span>
         </div>
       </div>
 
