@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { afterNextRender, Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
@@ -21,6 +21,14 @@ export class Login {
   });
 
   error = '';
+
+  constructor() {
+    afterNextRender(() => {
+      if (this.authService.isAuthenticated()) {
+        this.router.navigate(['/dashboard']);
+      }
+    });
+  }
 
   submit() {
     if (this.form.invalid) return;
