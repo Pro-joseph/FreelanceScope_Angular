@@ -29,9 +29,9 @@ export class DevisGenerate {
     this.loading = true;
     this.error = '';
     this.devisService.generate(this.projectId, this.form.getRawValue().conditions).subscribe({
-      next: (devis) => {
+      next: () => {
         this.notify.success('Devis généré avec succès');
-        this.router.navigate(['/projects', this.projectId, 'devis', devis.id]);
+        this.router.navigate(['/projects', this.projectId]);
       },
       error: (err) => {
         this.error = err.error?.message || "Erreur lors de la génération du devis";
