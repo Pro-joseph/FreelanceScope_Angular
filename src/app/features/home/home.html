@@ -1,0 +1,263 @@
+<div class="bg-surface text-bone antialiased overflow-x-hidden">
+  <!-- Navigation -->
+  <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-7xl bg-white/80 backdrop-blur-md border border-line rounded-full px-6 py-3 flex justify-between items-center shadow-lg">
+    <a routerLink="/" class="flex items-center gap-2">
+      <span class="w-2 h-2 bg-brand rounded-full animate-pulse"></span>
+      <span class="font-serif text-lg tracking-tight text-ink">FreelanceScope</span>
+      <span class="hidden lg:inline text-[10px] uppercase tracking-widest text-steel ml-2 font-mono">ENGINE RUNNING</span>
+    </a>
+    <div class="hidden md:flex gap-8 text-sm font-medium text-grey">
+      <a href="#features" class="relative nav-link hover:text-ink transition-colors">Fonctionnalités</a>
+      <a href="#how-it-works" class="relative nav-link hover:text-ink transition-colors">Comment ça marche</a>
+      <a href="#pricing" class="relative nav-link hover:text-ink transition-colors">Tarifs</a>
+    </div>
+    <a routerLink="/login" class="bg-ink hover:bg-brand text-white transition-all duration-300 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider">
+      Connexion
+    </a>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-surface">
+    <div class="container mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center relative z-10">
+      <div class="space-y-8">
+        <span class="text-xs font-bold tracking-[0.2em] uppercase text-brand">OPÉRATIONS PLATEFORME v2</span>
+        <h1 class="font-serif text-5xl md:text-7xl leading-tight tracking-tight text-ink">
+          Maîtrisez vos projets, de <span class="italic text-brand">l'estimation</span> au devis
+        </h1>
+        <p class="text-xl text-grey max-w-md leading-relaxed">
+          L'outil de scoping et d'estimation nouvelle génération pour les freelances. Précision, rapidité et transparence garanties.
+        </p>
+        <div class="flex gap-4">
+          <a routerLink="/register" class="bg-brand hover:bg-ink text-white shadow-xl shadow-brand/20 transition-all duration-300 px-8 py-4 rounded-full text-sm font-bold uppercase tracking-wider">
+            Commencer gratuitement
+          </a>
+          <a routerLink="/login" class="group flex items-center gap-2 text-sm font-medium text-ink">
+            <span class="w-8 h-8 rounded-full border border-line flex items-center justify-center group-hover:border-brand transition-colors">
+              <i class="fa-solid fa-play text-[10px]"></i>
+            </span>
+            Voir la démo
+          </a>
+        </div>
+      </div>
+      <div class="relative">
+        <div class="h-[400px] rounded-2xl overflow-hidden border border-line shadow-2xl transform lg:translate-x-12 transition-transform duration-700 hover:scale-[1.02]">
+          <img class="w-full h-full object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/gen_c47d537b1f_96c6612f438e40bc.png" alt="Interface de tableau de bord SaaS moderne minimaliste, accents indigo doux, panneaux glassmorphiques" />
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Bento Grid Features -->
+  <section id="features" class="py-24 bg-surface relative">
+    <div class="container mx-auto px-6">
+      <div class="mb-16 text-center max-w-2xl mx-auto">
+        <h2 class="font-serif text-4xl md:text-5xl mb-6 tracking-tight text-ink">Tout pour <span class="italic text-brand">orchestrer</span> votre activité</h2>
+        <p class="text-grey">Une suite d'outils conçue pour éliminer le chaos administratif et vous laisser vous concentrer sur le travail qui compte.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Large Card -->
+        <div class="lg:col-span-2 bg-elevated p-10 rounded-3xl border border-line hover:border-brand/20 hover:bg-white transition-all group">
+          <div class="w-12 h-12 rounded-2xl bg-white border border-line flex items-center justify-center mb-6 shadow-sm">
+            <i class="fa-solid fa-users-gear text-brand text-xl"></i>
+          </div>
+          <h3 class="text-2xl font-medium mb-3 text-ink">Gestion clients avancée</h3>
+          <p class="text-grey">Centralisez vos relations clients dans un CRM intuitif. Suivez chaque interaction, notez les détails et maintenez une communication fluide.</p>
+        </div>
+
+        <!-- Tall Card -->
+        <div class="md:row-span-2 bg-elevated p-10 rounded-3xl border border-line hover:border-brand/20 hover:bg-white transition-all group">
+          <div class="w-12 h-12 rounded-2xl bg-white border border-line flex items-center justify-center mb-6 shadow-sm">
+            <i class="fa-solid fa-chart-line text-brand text-xl"></i>
+          </div>
+          <h3 class="text-2xl font-medium mb-3 text-ink">Suivi temps réel</h3>
+          <p class="text-grey">Visualisez l'avancement de vos projets avec des tableaux de bord dynamiques mis à jour instantanément.</p>
+        </div>
+
+        <!-- Small Card -->
+        <div class="bg-elevated p-8 rounded-3xl border border-line hover:border-brand/20 hover:bg-white transition-all">
+          <i class="fa-solid fa-file-invoice text-brand text-2xl mb-4"></i>
+          <h3 class="text-lg font-medium mb-2 text-ink">Facturation</h3>
+          <p class="text-sm text-grey">Générez des factures professionnelles en quelques clics.</p>
+        </div>
+
+        <!-- Wide Card -->
+        <div class="lg:col-span-3 bg-elevated p-10 rounded-3xl border border-line hover:border-brand/20 hover:bg-white transition-all flex flex-col md:flex-row gap-8 items-center">
+          <div class="flex-1">
+            <div class="w-12 h-12 rounded-2xl bg-white border border-line flex items-center justify-center mb-6 shadow-sm">
+              <i class="fa-solid fa-brain text-brand text-xl"></i>
+            </div>
+            <h3 class="text-2xl font-medium mb-3 text-ink">Estimation IA</h3>
+            <p class="text-grey">Notre moteur prédictif analyse vos données passées pour proposer des estimations de temps et de coût précises, affinées au fil des projets.</p>
+          </div>
+          <div class="flex-1 h-64 rounded-xl overflow-hidden bg-white border border-line">
+            <img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/gen_0eaf38cb7e_149fbd20c19a1f5f.png" alt="Espace de travail professionnel lumineux et épuré, environnement freelance, lumière naturelle douce" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how-it-works" class="py-24 bg-elevated border-y border-line">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col md:flex-row gap-16">
+        <div class="md:w-1/3 sticky top-32 h-fit">
+          <span class="text-xs font-bold tracking-[0.2em] uppercase text-brand block mb-4">MÉTHODE</span>
+          <h2 class="font-serif text-4xl md:text-5xl mb-6 tracking-tight text-ink">Comment ça <span class="italic text-brand">marche</span></h2>
+          <p class="text-grey mb-8">Un workflow en quatre étapes pour transformer une idée floue en un devis précis et défendable.</p>
+          <a routerLink="/register" class="bg-ink hover:bg-brand text-white transition-all duration-300 px-8 py-4 rounded-full text-sm font-bold uppercase tracking-wider">
+            Tester le moteur
+          </a>
+        </div>
+        <div class="md:w-2/3 space-y-12">
+          <div class="flex gap-6 group">
+            <div class="flex flex-col items-center">
+              <div class="w-3 h-3 rounded-full bg-brand"></div>
+              <div class="w-px h-24 bg-line"></div>
+            </div>
+            <div class="pb-12">
+              <span class="text-xs text-steel font-mono font-bold">ÉTAPE 01</span>
+              <h3 class="text-2xl font-medium mt-2 mb-3 text-ink">Définir le périmètre</h3>
+              <p class="text-grey">Listez les fonctionnalités et contraintes du projet dans notre canevas de scoping interactif.</p>
+            </div>
+          </div>
+          <div class="flex gap-6 group">
+            <div class="flex flex-col items-center">
+              <div class="w-3 h-3 rounded-full bg-line"></div>
+              <div class="w-px h-24 bg-line"></div>
+            </div>
+            <div class="pb-12">
+              <span class="text-xs text-steel font-mono font-bold">ÉTAPE 02</span>
+              <h3 class="text-2xl font-medium mt-2 mb-3 text-ink">Estimation IA</h3>
+              <p class="text-grey">Le moteur analyse le cahier des charges et croise les données historiques pour générer une fourchette horaire.</p>
+            </div>
+          </div>
+          <div class="flex gap-6 group">
+            <div class="flex flex-col items-center">
+              <div class="w-3 h-3 rounded-full bg-line"></div>
+              <div class="w-px h-24 bg-line"></div>
+            </div>
+            <div class="pb-12">
+              <span class="text-xs text-steel font-mono font-bold">ÉTAPE 03</span>
+              <h3 class="text-2xl font-medium mt-2 mb-3 text-ink">Affiner manuellement</h3>
+              <p class="text-grey">Ajustez les postes selon votre expertise et ajoutez vos marges de risque.</p>
+            </div>
+          </div>
+          <div class="flex gap-6 group">
+            <div class="flex flex-col items-center">
+              <div class="w-3 h-3 rounded-full bg-line"></div>
+            </div>
+            <div>
+              <span class="text-xs text-steel font-mono font-bold">ÉTAPE 04</span>
+              <h3 class="text-2xl font-medium mt-2 mb-3 text-ink">Exporter le devis</h3>
+              <p class="text-grey">Générez un devis professionnel et partagez-le avec votre client en un clic.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interface Preview -->
+  <section class="py-24 bg-surface">
+    <div class="container mx-auto px-6">
+      <div class="max-w-3xl mb-16">
+        <h2 class="font-serif text-5xl md:text-6xl mb-8 tracking-tight text-ink">Visualisez notre <span class="text-outline italic text-brand">moteur</span> d'estimation</h2>
+        <p class="text-xl text-grey">Une interface claire qui met en avant les informations essentielles. Aucune distraction, juste la donnée qui aide à décider.</p>
+      </div>
+      <div class="rounded-3xl overflow-hidden border border-line shadow-2xl bg-white p-4">
+        <div class="aspect-video relative group rounded-2xl overflow-hidden">
+          <img class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/gen_31e9dade66_477f6fb96e4e164a.png" alt="Tableau de bord analytique SaaS blanc et indigo, graphiques épurés, design UI premium" />
+          <div class="absolute inset-0 bg-gradient-to-t from-white/80 via-transparent to-transparent opacity-60"></div>
+          <div class="absolute bottom-8 left-8">
+            <span class="text-xs font-bold tracking-widest uppercase text-brand">INTERFACE PRÉVIEW</span>
+            <h3 class="text-2xl font-medium mt-1 text-ink">Tableau de bord d'estimation</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="py-24 bg-surface border-t border-line">
+    <div class="container mx-auto px-6">
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <h2 class="font-serif text-4xl md:text-5xl mb-6 tracking-tight text-ink">Des tarifs <span class="italic text-brand">transparents</span></h2>
+        <p class="text-grey">Commencez gratuitement, évoluez au rythme de votre activité. Sans engagement.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div class="bg-white p-10 rounded-3xl border border-line flex flex-col hover:shadow-xl transition-all">
+          <h3 class="text-xl font-medium mb-2 text-ink">Starter</h3>
+          <div class="text-4xl font-serif mb-6 text-ink">0DH<span class="text-base text-steel font-sans">/mois</span></div>
+          <p class="text-grey text-sm mb-8">Pour découvrir la plateforme et gérer vos premiers petits projets.</p>
+          <ul class="space-y-3 mb-10 flex-1">
+            <li class="flex items-center gap-3 text-sm text-grey"><i class="fa-solid fa-check text-brand"></i> 3 projets actifs</li>
+            <li class="flex items-center gap-3 text-sm text-grey"><i class="fa-solid fa-check text-brand"></i> Estimation IA basique</li>
+            <li class="flex items-center gap-3 text-sm text-grey"><i class="fa-solid fa-check text-brand"></i> Export PDF</li>
+          </ul>
+          <a routerLink="/register" class="block w-full py-3 rounded-full border border-line text-center text-sm font-bold uppercase tracking-wider text-ink hover:bg-brand hover:text-white hover:border-brand transition-all">Choisir</a>
+        </div>
+        <div class="bg-white p-10 rounded-3xl border-2 border-brand flex flex-col relative shadow-2xl shadow-brand/10">
+          <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">Recommandé</span>
+          <h3 class="text-xl font-medium mb-2 text-ink">Pro</h3>
+          <div class="text-4xl font-serif mb-6 text-ink">29DH<span class="text-base text-steel font-sans">/mois</span></div>
+          <p class="text-grey text-sm mb-8">Pour les freelances installés qui veulent gagner du temps sur le scoping.</p>
+          <ul class="space-y-3 mb-10 flex-1">
+            <li class="flex items-center gap-3 text-sm text-grey"><i class="fa-solid fa-check text-brand"></i> Projets illimités</li>
+            <li class="flex items-center gap-3 text-sm text-grey"><i class="fa-solid fa-check text-brand"></i> Moteur IA avancé</li>
+            <li class="flex items-center gap-3 text-sm text-grey"><i class="fa-solid fa-check text-brand"></i> CRM clients</li>
+            <li class="flex items-center gap-3 text-sm text-grey"><i class="fa-solid fa-check text-brand"></i> Facturation intégrée</li>
+          </ul>
+          <a routerLink="/register" class="block w-full py-3 rounded-full bg-brand text-white text-center text-sm font-bold uppercase tracking-wider hover:bg-ink transition-all">Choisir</a>
+        </div>
+        <div class="bg-white p-10 rounded-3xl border border-line flex flex-col hover:shadow-xl transition-all">
+          <h3 class="text-xl font-medium mb-2 text-ink">Studio</h3>
+          <div class="text-4xl font-serif mb-6 text-ink">79DH<span class="text-base text-steel font-sans">/mois</span></div>
+          <p class="text-grey text-sm mb-8">Pour les petites agences collaborant sur des projets complexes.</p>
+          <ul class="space-y-3 mb-10 flex-1">
+            <li class="flex items-center gap-3 text-sm text-grey"><i class="fa-solid fa-check text-brand"></i> Tout le plan Pro</li>
+            <li class="flex items-center gap-3 text-sm text-grey"><i class="fa-solid fa-check text-brand"></i> Jusqu'à 5 membres</li>
+            <li class="flex items-center gap-3 text-sm text-grey"><i class="fa-solid fa-check text-brand"></i> API & intégrations</li>
+          </ul>
+          <a routerLink="/register" class="block w-full py-3 rounded-full border border-line text-center text-sm font-bold uppercase tracking-wider text-ink hover:bg-brand hover:text-white hover:border-brand transition-all">Choisir</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-line pt-24 pb-12">
+    <div class="container mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-12 mb-20">
+        <div class="col-span-2">
+          <span class="font-serif text-2xl tracking-tight block mb-6 text-ink">FreelanceScope</span>
+          <p class="text-grey max-w-sm">La plateforme de scoping et d'estimation nouvelle génération pour les professionnels indépendants.</p>
+        </div>
+        <div>
+          <h4 class="font-bold uppercase tracking-widest text-xs mb-6 text-ink">Produit</h4>
+          <ul class="space-y-4 text-sm text-grey">
+            <li><a href="#features" class="hover:text-brand transition-colors">Fonctionnalités</a></li>
+            <li><a href="#pricing" class="hover:text-brand transition-colors">Tarifs</a></li>
+            <li><a href="#how-it-works" class="hover:text-brand transition-colors">Comment ça marche</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold uppercase tracking-widest text-xs mb-6 text-ink">Légal</h4>
+          <ul class="space-y-4 text-sm text-grey">
+            <li><a href="#" class="hover:text-brand transition-colors">Confidentialité</a></li>
+            <li><a href="#" class="hover:text-brand transition-colors">CGU</a></li>
+            <li><a href="#" class="hover:text-brand transition-colors">Mentions légales</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-line pt-12 flex flex-col md:flex-row justify-between items-center gap-6">
+        <span class="text-xs text-steel">© 2026 FreelanceScope. Tous droits réservés.</span>
+        <div class="flex gap-8 text-xs text-steel uppercase tracking-widest">
+          <a href="#" class="hover:text-brand">Mentions Légales</a>
+          <a href="#" class="hover:text-brand">Politique de confidentialité</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
