@@ -21,7 +21,6 @@ export class Register {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
     password_confirmation: ['', Validators.required],
-    role: ['freelance' as const],
   });
 
   error = '';

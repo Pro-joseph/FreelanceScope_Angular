@@ -16,7 +16,6 @@ export interface RegisterData {
   email: string;
   password: string;
   password_confirmation: string;
-  role: 'admin' | 'freelance';
 }
 
 const isBrowser = typeof localStorage !== 'undefined';

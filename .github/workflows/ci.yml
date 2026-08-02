@@ -25,17 +25,3 @@ jobs:
           tags: |
             joseph0070/freelancescope:angular-latest
             joseph0070/freelancescope:angular-${{ github.sha }}
-
-  dispatch-deploy:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.ORCHESTRATOR_PAT }}
-          script: |
-            await github.rest.repos.createDispatchEvent({
-              owner: 'Pro-joseph',
-              repo: 'Repository_dispatch_FreelanceScope',
-              event_type: 'deploy',
-            });
