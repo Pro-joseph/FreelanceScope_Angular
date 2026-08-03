@@ -21,4 +21,10 @@ export class Dashboard {
       this.dashboardService.stats().subscribe((s) => this.stats.set(s));
     });
   }
+
+  openTelescope() {
+    this.authService.authorizeTelescope().subscribe({
+      next: () => window.open('/telescope', '_blank'),
+    });
+  }
 }

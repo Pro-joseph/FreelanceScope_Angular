@@ -15,6 +15,10 @@
         <p class="text-sm font-medium text-gray-500">Devis</p>
         <p class="text-3xl font-bold text-gray-900 mt-1">{{ stats()?.devis_count ?? '—' }}</p>
       </a>
+      <button (click)="openTelescope()" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow text-left">
+        <p class="text-sm font-medium text-gray-500">Telescope</p>
+        <p class="text-base font-semibold text-indigo-600 mt-1">Ouvrir Telescope</p>
+      </button>
     } @else {
       <a routerLink="/clients" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
         <p class="text-sm font-medium text-gray-500">Clients</p>

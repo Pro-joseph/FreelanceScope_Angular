@@ -94,6 +94,10 @@ export class AuthService {
     );
   }
 
+  authorizeTelescope() {
+    return this.http.post(`${environment.apiUrl}/admin/telescope/authorize`, {});
+  }
+
   logout() {
     return this.http.post(`${this.apiUrl}/logout`, {}).pipe(
       finalize(() => this.clearSession()),
