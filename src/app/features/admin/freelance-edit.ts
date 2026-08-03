@@ -54,4 +54,21 @@ export class FreelanceEdit {
         },
       });
   }
+
+  delete() {
+    if (!confirm('Supprimer ce freelance ? Cette action est irréversible.')) return;
+
+    this.error = '';
+    this.http
+      .delete(`${environment.apiUrl}/admin/freelances/${this.id}`)
+      .subscribe({
+        next: () => {
+          this.notify.success('Freelance supprimé');
+          this.router.navigate(['/admin/freelances']);
+        },
+        error: (err) => {
+          this.error = err.error?.message || "Erreur lors de la suppression";
+        },
+      });
+  }
 }

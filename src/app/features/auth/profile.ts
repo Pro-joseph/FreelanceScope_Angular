@@ -24,6 +24,7 @@ export class Profile {
     email: [''],
     telephone: [''],
     taux_horaire: [0],
+    statut: ['actif'],
   });
 
   error = '';
@@ -38,6 +39,7 @@ export class Profile {
           email: u.email,
           telephone: u.telephone || '',
           taux_horaire: u.taux_horaire || 0,
+          statut: u.statut || 'actif',
         });
       }
     });
