@@ -1,4 +1,4 @@
-import { afterNextRender, Component, inject, signal } from '@angular/core';
+import { afterNextRender, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DashboardService, type DashboardStats } from '../../core/services/dashboard.service';
 import { AuthService } from '../../core/services/auth.service';
@@ -11,6 +11,8 @@ import { AuthService } from '../../core/services/auth.service';
 export class Dashboard {
   private readonly dashboardService = inject(DashboardService);
   readonly authService = inject(AuthService);
+
+  readonly isAdmin = computed(() => this.authService.user()?.role === 'admin');
 
   readonly stats = signal<DashboardStats | null>(null);
 

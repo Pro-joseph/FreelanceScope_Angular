@@ -12,4 +12,14 @@ export const adminRoutes: Routes = [
     canActivate: [roleGuard(['admin'])],
     loadComponent: () => import('./freelance-edit').then((m) => m.FreelanceEdit),
   },
+  {
+    path: 'clients',
+    canActivate: [roleGuard(['admin'])],
+    loadComponent: () => import('./admin-client-list').then((m) => m.AdminClientList),
+  },
+  {
+    path: 'devis',
+    canActivate: [roleGuard(['admin'])],
+    loadComponent: () => import('./admin-devis-list').then((m) => m.AdminDevisList),
+  },
 ];
