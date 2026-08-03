@@ -31,9 +31,15 @@ export class ClientForm {
     if (id) {
       this.isEdit = true;
       afterNextRender(() => {
-        this.clientService.get(id).subscribe((client) => {
-          this.form.patchValue(client);
-          this.cdr.markForCheck();
+        this.clientService.get(id).subscribe({
+          next: (client) => {
+            this.form.patchValue(client);
+            this.cdr.markForCheck();
+          },
+          error: () => {
+            this.notify.error("Ce client n'existe pas ou vous n'y avez pas accès.");
+            this.router.navigate(['/clients']);
+          },
         });
       });
     }

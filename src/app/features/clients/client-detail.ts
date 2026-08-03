@@ -21,8 +21,16 @@ export class ClientDetail {
   constructor() {
     const id = this.route.snapshot.params['id'];
     afterNextRender(() => {
-      this.clientService.get(id).subscribe((c) => this.client.set(c));
+      this.clientService.get(id).subscribe({
+        next: (c) => this.client.set(c),
+        error: () => this.handleDenied(),
+      });
     });
+  }
+
+  private handleDenied() {
+    this.notify.error("Ce client n'existe pas ou vous n'y avez pas accès.");
+    this.router.navigate(['/clients']);
   }
 
   delete() {
