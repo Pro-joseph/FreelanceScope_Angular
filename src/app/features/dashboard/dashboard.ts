@@ -23,8 +23,10 @@ export class Dashboard {
   }
 
   openTelescope() {
+    const win = window.open('', '_blank');
     this.authService.authorizeTelescope().subscribe({
-      next: () => window.open('/telescope', '_blank'),
+      next: () => win && (win.location.href = '/telescope'),
+      error: () => win?.close(),
     });
   }
 }
