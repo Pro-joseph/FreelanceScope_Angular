@@ -24,9 +24,17 @@ export class ProjectDetail {
   constructor() {
     this.route.params.pipe(takeUntilDestroyed()).subscribe(params => {
       const id = +params['id'];
-      this.projectService.get(id).subscribe(p => this.project.set(p));
+      this.projectService.get(id).subscribe({
+        next: p => this.project.set(p),
+        error: () => this.handleDenied(),
+      });
       this.devisService.list(id).subscribe(d => this.devisList.set(d));
     });
+  }
+
+  private handleDenied() {
+    this.notify.error("Ce projet n'existe pas ou vous n'y avez pas accès.");
+    this.router.navigate(['/projects']);
   }
 
   delete() {
