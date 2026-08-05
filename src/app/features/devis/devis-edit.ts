@@ -1,6 +1,6 @@
 import { afterNextRender, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { DevisService } from '../../core/services/devis.service';
 import { NotificationService } from '../../shared/services/notification.service';
 
@@ -22,7 +22,6 @@ export class DevisEdit {
 
   readonly form = this.fb.nonNullable.group({
     conditions: [''],
-    total_amount: [0, Validators.min(0)],
     status: ['draft'],
   });
 
@@ -34,7 +33,6 @@ export class DevisEdit {
         next: (devis) => {
           this.form.patchValue({
             conditions: devis.conditions || '',
-            total_amount: devis.total_amount,
             status: devis.status,
           });
           this.cdr.markForCheck();
