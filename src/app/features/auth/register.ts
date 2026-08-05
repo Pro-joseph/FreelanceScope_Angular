@@ -32,7 +32,7 @@ export class Register {
       return;
     }
     this.error.set('');
-    this.authService.register(this.form.getRawValue() as any).subscribe({
+    this.authService.register(this.form.getRawValue()).subscribe({
       next: () => {
         this.notify.success('Inscription réussie');
         this.router.navigate(['/dashboard']);

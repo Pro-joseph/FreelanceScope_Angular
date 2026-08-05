@@ -84,7 +84,7 @@ export class FeatureForm {
           this.notify.success('Fonctionnalité mise à jour');
           this.router.navigate(['/projects', this.projectId]);
         },
-        error: (err: any) => {
+        error: (err) => {
           this.error.set(err.error?.message || "Erreur lors de la mise à jour");
         },
       });

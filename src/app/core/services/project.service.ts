@@ -10,7 +10,9 @@ export class ProjectService {
   private readonly apiUrl = `${environment.apiUrl}/projects`;
 
   list(params?: { status?: string; client_id?: number }) {
-    return this.http.get<{ data: Project[] }>(this.apiUrl, { params: params as any }).pipe(map(r => r.data));
+    return this.http
+      .get<{ data: Project[] }>(this.apiUrl, { params: params as unknown as Record<string, string | number> })
+      .pipe(map(r => r.data));
   }
 
   get(id: number) {

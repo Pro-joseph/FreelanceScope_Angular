@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../core/services/auth.service';
 import { NotificationService } from '../../shared/services/notification.service';
+import type { User } from '../../core/models';
 
 @Component({
   selector: 'app-profile',
@@ -48,10 +49,10 @@ export class Profile {
   submit() {
     this.error.set('');
     this.http
-      .put(`${environment.apiUrl}/freelance/profile`, this.form.getRawValue())
+      .put<{ data?: User } & Record<string, unknown>>(`${environment.apiUrl}/freelance/profile`, this.form.getRawValue())
       .subscribe({
-        next: (res: any) => {
-          const data = res?.data ?? res;
+        next: (res) => {
+          const data = (res?.data ?? res) as User;
           if (data) {
             this.authService.user.set(data);
           }

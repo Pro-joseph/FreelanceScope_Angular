@@ -11,14 +11,14 @@ export interface Devis {
     name: string;
     description: string;
   };
-  features?: Array<{
+  features?: {
     name: string;
     description: string;
     complexity: string;
     hourly_rate?: number;
     total_hours?: number;
     total_amount?: number;
-  }>;
+  }[];
   total_amount: number;
   conditions?: string;
   status: DevisStatut;

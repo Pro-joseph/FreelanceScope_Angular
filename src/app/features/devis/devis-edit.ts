@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { DevisService } from '../../core/services/devis.service';
 import { NotificationService } from '../../shared/services/notification.service';
+import type { Devis } from '../../core/models';
 
 @Component({
   selector: 'app-devis-edit',
@@ -48,7 +49,7 @@ export class DevisEdit {
     if (this.form.invalid) return;
     this.error.set('');
     this.devisService
-      .update(this.projectId, this.devisId, this.form.getRawValue() as any)
+      .update(this.projectId, this.devisId, this.form.getRawValue() as Partial<Devis>)
       .subscribe({
         next: () => {
           this.notify.success('Devis modifié');
