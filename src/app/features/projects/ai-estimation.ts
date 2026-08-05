@@ -21,8 +21,8 @@ export class AiEstimation {
   });
 
   readonly analyses = signal<AiAnalysis[]>([]);
-  loading = false;
-  error = '';
+  readonly loading = signal(false);
+  readonly error = signal('');
 
   constructor() {
     afterNextRender(() => {
@@ -32,16 +32,16 @@ export class AiEstimation {
 
   submit() {
     if (this.form.invalid) return;
-    this.loading = true;
-    this.error = '';
+    this.loading.set(true);
+    this.error.set('');
     this.aiService.estimate(this.projectId, this.form.getRawValue().prompt).subscribe({
       next: () => {
         this.form.reset();
         this.waitForAnalysis();
       },
       error: (err) => {
-        this.error = err.error?.message || "Erreur lors de l'estimation IA";
-        this.loading = false;
+        this.error.set(err.error?.message || "Erreur lors de l'estimation IA");
+        this.loading.set(false);
       },
     });
   }
@@ -55,7 +55,7 @@ export class AiEstimation {
       this.aiService.getAnalyses(this.projectId).subscribe((a) => {
         this.analyses.set(a);
         if (a.length > initialCount || attempts >= 30) {
-          this.loading = false;
+          this.loading.set(false);
           this.router.navigate(['/projects', this.projectId]);
           return;
         }

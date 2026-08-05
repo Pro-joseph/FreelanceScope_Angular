@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
@@ -19,21 +19,21 @@ export class ResetPassword {
     password_confirmation: ['', Validators.required],
   });
 
-  error = '';
+  readonly error = signal('');
 
   submit() {
     if (this.form.invalid) return;
     const { password, password_confirmation } = this.form.getRawValue();
     if (password !== password_confirmation) {
-      this.error = 'Les mots de passe ne correspondent pas';
+      this.error.set('Les mots de passe ne correspondent pas');
       return;
     }
-    this.error = '';
+    this.error.set('');
     const token = this.route.snapshot.params['token'];
     this.authService.resetPassword(token, password, password_confirmation).subscribe({
       next: () => this.router.navigate(['/login']),
       error: (err) => {
-        this.error = err.error?.message || 'Erreur lors de la réinitialisation';
+        this.error.set(err.error?.message || 'Erreur lors de la réinitialisation');
       },
     });
   }

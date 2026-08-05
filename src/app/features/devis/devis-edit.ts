@@ -1,4 +1,4 @@
-import { afterNextRender, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { afterNextRender, ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { DevisService } from '../../core/services/devis.service';
@@ -25,7 +25,7 @@ export class DevisEdit {
     status: ['draft'],
   });
 
-  error = '';
+  readonly error = signal('');
 
   constructor() {
     afterNextRender(() => {
@@ -38,7 +38,7 @@ export class DevisEdit {
           this.cdr.markForCheck();
         },
         error: () => {
-          this.error = 'Impossible de charger le devis';
+          this.error.set('Impossible de charger le devis');
         },
       });
     });
@@ -46,7 +46,7 @@ export class DevisEdit {
 
   submit() {
     if (this.form.invalid) return;
-    this.error = '';
+    this.error.set('');
     this.devisService
       .update(this.projectId, this.devisId, this.form.getRawValue() as any)
       .subscribe({
@@ -55,7 +55,7 @@ export class DevisEdit {
           this.router.navigate(['/projects', this.projectId, 'devis', this.devisId]);
         },
         error: (err) => {
-          this.error = err.error?.message || "Erreur lors de la mise à jour";
+          this.error.set(err.error?.message || "Erreur lors de la mise à jour");
         },
       });
   }

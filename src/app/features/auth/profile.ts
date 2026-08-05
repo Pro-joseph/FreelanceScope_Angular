@@ -1,4 +1,4 @@
-import { afterNextRender, Component, inject } from '@angular/core';
+import { afterNextRender, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -27,7 +27,7 @@ export class Profile {
     statut: ['actif'],
   });
 
-  error = '';
+  readonly error = signal('');
 
   constructor() {
     afterNextRender(() => {
@@ -46,7 +46,7 @@ export class Profile {
   }
 
   submit() {
-    this.error = '';
+    this.error.set('');
     this.http
       .put(`${environment.apiUrl}/freelance/profile`, this.form.getRawValue())
       .subscribe({
@@ -58,7 +58,7 @@ export class Profile {
           this.notify.success('Profil mis à jour');
         },
         error: (err) => {
-          this.error = err.error?.message || "Erreur lors de la sauvegarde";
+          this.error.set(err.error?.message || "Erreur lors de la sauvegarde");
         },
       });
   }

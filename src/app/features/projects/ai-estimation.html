@@ -5,8 +5,8 @@
   </div>
 
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-    @if (error) {
-      <div class="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">{{ error }}</div>
+    @if (error()) {
+      <div class="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">{{ error() }}</div>
     }
 
     <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
@@ -17,8 +17,8 @@
           <p class="text-red-500 text-xs mt-1">Minimum 20 caractères requis</p>
         }
       </div>
-      <button type="submit" [disabled]="form.invalid || loading" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 transition-colors">
-        @if (loading) {
+      <button type="submit" [disabled]="form.invalid || loading()" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 transition-colors">
+        @if (loading()) {
           Analyse en cours...
         } @else {
           Lancer l'estimation IA

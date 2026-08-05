@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
@@ -16,16 +16,16 @@ export class ForgotPassword {
     email: ['', [Validators.required, Validators.email]],
   });
 
-  sent = false;
-  error = '';
+  readonly sent = signal(false);
+  readonly error = signal('');
 
   submit() {
     if (this.form.invalid) return;
-    this.error = '';
+    this.error.set('');
     this.authService.forgotPassword(this.form.getRawValue().email).subscribe({
-      next: () => (this.sent = true),
+      next: () => this.sent.set(true),
       error: (err) => {
-        this.error = err.error?.message || 'Erreur lors de la demande';
+        this.error.set(err.error?.message || 'Erreur lors de la demande');
       },
     });
   }

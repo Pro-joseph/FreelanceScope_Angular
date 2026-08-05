@@ -29,7 +29,7 @@ export class ProjectForm {
 
   readonly clients = signal<Client[]>([]);
   isEdit = false;
-  error = '';
+  readonly error = signal('');
 
   constructor() {
     afterNextRender(() => {
@@ -55,7 +55,7 @@ export class ProjectForm {
 
   submit() {
     if (this.form.invalid) return;
-    this.error = '';
+    this.error.set('');
     const data = this.form.getRawValue();
     const id = this.route.snapshot.params['id'];
 
@@ -69,7 +69,7 @@ export class ProjectForm {
         this.router.navigate(['/projects', project.id]);
       },
       error: (err) => {
-        this.error = err.error?.message || "Erreur lors de la sauvegarde du projet";
+        this.error.set(err.error?.message || "Erreur lors de la sauvegarde du projet");
       },
     });
   }

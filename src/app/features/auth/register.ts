@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
@@ -23,22 +23,22 @@ export class Register {
     password_confirmation: ['', Validators.required],
   });
 
-  error = '';
+  readonly error = signal('');
 
   submit() {
     if (this.form.invalid) return;
     if (this.form.getRawValue().password !== this.form.getRawValue().password_confirmation) {
-      this.error = 'Les mots de passe ne correspondent pas';
+      this.error.set('Les mots de passe ne correspondent pas');
       return;
     }
-    this.error = '';
+    this.error.set('');
     this.authService.register(this.form.getRawValue() as any).subscribe({
       next: () => {
         this.notify.success('Inscription réussie');
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
-        this.error = err.error?.message || "Erreur lors de l'inscription";
+        this.error.set(err.error?.message || "Erreur lors de l'inscription");
       },
     });
   }

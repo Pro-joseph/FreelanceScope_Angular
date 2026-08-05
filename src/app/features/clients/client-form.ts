@@ -1,4 +1,4 @@
-import { afterNextRender, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { afterNextRender, ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClientService } from '../../core/services/client.service';
@@ -24,7 +24,7 @@ export class ClientForm {
   });
 
   isEdit = false;
-  error = '';
+  readonly error = signal('');
 
   constructor() {
     const id = this.route.snapshot.params['id'];
@@ -47,7 +47,7 @@ export class ClientForm {
 
   submit() {
     if (this.form.invalid) return;
-    this.error = '';
+    this.error.set('');
     const data = this.form.getRawValue();
     const id = this.route.snapshot.params['id'];
 
@@ -61,7 +61,7 @@ export class ClientForm {
         this.router.navigate(['/clients']);
       },
       error: (err) => {
-        this.error = err.error?.message || 'Erreur lors de la sauvegarde';
+        this.error.set(err.error?.message || 'Erreur lors de la sauvegarde');
       },
     });
   }

@@ -1,4 +1,4 @@
-import { afterNextRender, Component, inject } from '@angular/core';
+import { afterNextRender, Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ProjectService } from '../../core/services/project.service';
@@ -28,7 +28,7 @@ export class FeatureForm {
   projectId = 0;
   featureId = 0;
   estimateId = 0;
-  error = '';
+  readonly error = signal('');
 
   constructor() {
     this.projectId = +this.route.snapshot.params['id'];
@@ -44,7 +44,7 @@ export class FeatureForm {
           });
         },
         error: () => {
-          this.error = "Impossible de charger la fonctionnalité";
+          this.error.set("Impossible de charger la fonctionnalité");
         },
       });
       this.projectService.getEstimate(this.featureId).subscribe({
@@ -60,7 +60,7 @@ export class FeatureForm {
   }
 
   submit() {
-    this.error = '';
+    this.error.set('');
 
     const data = this.form.getRawValue();
 
@@ -85,7 +85,7 @@ export class FeatureForm {
           this.router.navigate(['/projects', this.projectId]);
         },
         error: (err: any) => {
-          this.error = err.error?.message || "Erreur lors de la mise à jour";
+          this.error.set(err.error?.message || "Erreur lors de la mise à jour");
         },
       });
   }

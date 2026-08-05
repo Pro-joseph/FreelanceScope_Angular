@@ -1,4 +1,4 @@
-import { afterNextRender, Component, inject } from '@angular/core';
+import { afterNextRender, Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
@@ -20,7 +20,7 @@ export class Login {
     password: ['', Validators.required],
   });
 
-  error = '';
+  readonly error = signal('');
 
   constructor() {
     afterNextRender(() => {
@@ -32,7 +32,7 @@ export class Login {
 
   submit() {
     if (this.form.invalid) return;
-    this.error = '';
+    this.error.set('');
     const { email, password } = this.form.getRawValue();
     this.authService.login(email, password).subscribe({
       next: () => {
@@ -40,7 +40,7 @@ export class Login {
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
-        this.error = err.error?.message || 'Email ou mot de passe incorrect';
+        this.error.set(err.error?.message || 'Email ou mot de passe incorrect');
       },
     });
   }

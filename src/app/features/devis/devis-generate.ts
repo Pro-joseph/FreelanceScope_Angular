@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DevisService } from '../../core/services/devis.service';
@@ -22,20 +22,20 @@ export class DevisGenerate {
     conditions: [''],
   });
 
-  error = '';
-  loading = false;
+  readonly error = signal('');
+  readonly loading = signal(false);
 
   submit() {
-    this.loading = true;
-    this.error = '';
+    this.loading.set(true);
+    this.error.set('');
     this.devisService.generate(this.projectId, this.form.getRawValue().conditions).subscribe({
       next: () => {
         this.notify.success('Devis généré avec succès');
         this.router.navigate(['/projects', this.projectId]);
       },
       error: (err) => {
-        this.error = err.error?.message || "Erreur lors de la génération du devis";
-        this.loading = false;
+        this.error.set(err.error?.message || "Erreur lors de la génération du devis");
+        this.loading.set(false);
       },
     });
   }

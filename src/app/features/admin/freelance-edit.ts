@@ -1,4 +1,4 @@
-import { afterNextRender, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { afterNextRender, ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -29,7 +29,7 @@ export class FreelanceEdit {
     taux_horaire: [0],
   });
 
-  error = '';
+  readonly error = signal('');
 
   constructor() {
     afterNextRender(() => {
@@ -41,7 +41,7 @@ export class FreelanceEdit {
   }
 
   submit() {
-    this.error = '';
+    this.error.set('');
     this.http
       .put(`${environment.apiUrl}/admin/freelances/${this.id}`, this.form.getRawValue())
       .subscribe({
@@ -50,7 +50,7 @@ export class FreelanceEdit {
           this.router.navigate(['/admin/freelances']);
         },
         error: (err) => {
-          this.error = err.error?.message || "Erreur lors de la mise à jour";
+          this.error.set(err.error?.message || "Erreur lors de la mise à jour");
         },
       });
   }
@@ -58,7 +58,7 @@ export class FreelanceEdit {
   delete() {
     if (!confirm('Supprimer ce freelance ? Cette action est irréversible.')) return;
 
-    this.error = '';
+    this.error.set('');
     this.http
       .delete(`${environment.apiUrl}/admin/freelances/${this.id}`)
       .subscribe({
@@ -67,7 +67,7 @@ export class FreelanceEdit {
           this.router.navigate(['/admin/freelances']);
         },
         error: (err) => {
-          this.error = err.error?.message || "Erreur lors de la suppression";
+          this.error.set(err.error?.message || "Erreur lors de la suppression");
         },
       });
   }
