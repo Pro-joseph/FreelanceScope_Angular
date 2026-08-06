@@ -41,6 +41,10 @@ export const routes: Routes = [
         loadChildren: () => import('./features/clients/clients.routes').then((m) => m.clientsRoutes),
       },
       {
+        path: 'devis',
+        loadComponent: () => import('./features/devis/devis-list').then((m) => m.DevisList),
+      },
+      {
         path: 'projects',
         loadChildren: () => import('./features/projects/projects.routes').then((m) => m.projectsRoutes),
       },

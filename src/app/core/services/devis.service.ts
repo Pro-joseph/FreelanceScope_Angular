@@ -9,6 +9,10 @@ export class DevisService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = `${environment.apiUrl}/projects`;
 
+  listAll() {
+    return this.http.get<{ data: Devis[] }>(`${environment.apiUrl}/devis`).pipe(map(r => r.data));
+  }
+
   list(projectId: number) {
     return this.http.get<{ data: Devis[] }>(`${this.apiUrl}/${projectId}/devis`).pipe(map(r => r.data));
   }
